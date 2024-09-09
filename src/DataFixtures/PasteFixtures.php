@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Paste;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\String\ByteString;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class PasteFixtures extends Fixture
@@ -13,10 +12,11 @@ class PasteFixtures extends Fixture
     {
         $test = new Paste();
 
-        $test->setToken(ByteString::fromRandom(32));
-        $test->setContent('Test');
+        $test->setToken('zSc0Uh8L1gsA7a6u');
+        $test->setContent('this is a test paste');
         $test->setTime(new \DateTime());
 
+        // persist & flush paste to database
         $manager->persist($test);
         $manager->flush();
     }
