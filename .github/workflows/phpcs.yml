@@ -1,0 +1,31 @@
+# run statc code analysis with PHP CodeSniffer
+name: PHP-CodeSniffer
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  phpcs:
+    name: PHP CodeSniffer
+    runs-on: ubuntu-latest
+
+    steps:
+    # code checkout
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # setup PHP
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+
+    # install dependencies
+    - name: Install dependencies
+      run: composer install --no-interaction --no-progress --no-suggest
+
+    # check code with code sniffer
+    - name: Run PHP CodeSniffer
+      run: vendor/bin/phpcs
