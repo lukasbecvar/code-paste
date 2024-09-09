@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code paste</title>
     <meta content="Text and code sharing tool" name="description">
     <link rel="icon" href={{ asset('assets/images/favicon.png') }} type="image/x-icon"/>
-    {# <======= REGISTER ASSETS =======> #}
-    {{ encore_entry_link_tags('main-css') }}
-    <title>Code paste</title>
+
+    {{ encore_entry_link_tags('paste-add-css') }}
+    {{ encore_entry_link_tags('scrollbar-css') }}
+    {{ encore_entry_link_tags('paste-view-css') }}
+    {{ encore_entry_link_tags('atom-one-dark-css') }}
 </head>
 <body>
-    {# <======= MAIN COMPONENT WRAPPER =======> #}
     {% block body %}{% endblock %}
 </body>
 </html>

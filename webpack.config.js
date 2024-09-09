@@ -7,7 +7,12 @@ Encore
     .setPublicPath('/assets')
 
     // register css
-    .addEntry('main-css', './assets/css/main.css')
+    .addEntry('paste-add-css', './assets/css/paste-add.css')
+    .addEntry('scrollbar-css', './assets/css/scrollbar.css')
+    .addEntry('paste-view-css', './assets/css/paste-view.css')
+    .addEntry('atom-one-dark-css', './assets/css/atom-one-dark.css')
+
+    .addEntry('code-paste-js', './assets/js/code-paste.js')
 
     // copy static assets
     .copyFiles({
