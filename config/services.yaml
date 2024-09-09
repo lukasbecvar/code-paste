@@ -14,3 +14,42 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    # error handeling controller for app exception
+    # --------------------------------------------------------------------------------- #
+    Symfony\Component\HttpKernel\EventListener\ErrorListener:
+        arguments:
+            $controller: 'App\Controller\ErrorController::show'
+
+    # exception event subscriber
+    App\Event\Subscriber\ExceptionEventSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # app middlewares
+    # --------------------------------------------------------------------------------- #
+    # resource build check middleware
+    App\Middleware\AssetsCheckMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 5 }
+
+    # escape request data middleware
+    App\Middleware\EscapeRequestDataMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 4 }
+
+    # check database online middleware
+    App\Middleware\DatabaseOnlineMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 3 }
+
+    # security check middleware
+    App\Middleware\SecurityCheckMiddleware:
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.request', priority: 2 }
+
+    # handle maintenance mode middleware
+    App\Middleware\MaintenanceMiddleware:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, priority: 1 }
+    # --------------------------------------------------------------------------------- #

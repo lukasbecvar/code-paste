@@ -10,6 +10,7 @@ Encore
     .addEntry('paste-add-css', './assets/css/paste-add.css')
     .addEntry('scrollbar-css', './assets/css/scrollbar.css')
     .addEntry('paste-view-css', './assets/css/paste-view.css')
+    .addEntry('error-page-css', './assets/css/error-page.css')
     .addEntry('atom-one-dark-css', './assets/css/atom-one-dark.css')
 
     .addEntry('code-paste-js', './assets/js/code-paste.js')
