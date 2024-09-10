@@ -5,6 +5,7 @@ namespace App\Tests\Manager;
 use App\Entity\Paste;
 use App\Util\SiteUtil;
 use App\Util\SecurityUtil;
+use App\Manager\LogManager;
 use App\Manager\PasteManager;
 use App\Manager\ErrorManager;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class PasteManagerTest extends TestCase
 {
+    private LogManager $logManager;
     private PasteManager $pasteManager;
     private SecurityUtil $securityUtil;
     private SiteUtil & MockObject $siteUtil;
@@ -31,6 +33,7 @@ class PasteManagerTest extends TestCase
     {
         // mock dependencies
         $this->siteUtil = $this->createMock(SiteUtil::class);
+        $this->logManager = $this->createMock(LogManager::class);
         $this->securityUtil = $this->createMock(SecurityUtil::class);
         $this->errorManager = $this->createMock(ErrorManager::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
@@ -38,6 +41,7 @@ class PasteManagerTest extends TestCase
         // init paste manager
         $this->pasteManager = new PasteManager(
             $this->siteUtil,
+            $this->logManager,
             $this->securityUtil,
             $this->errorManager,
             $this->entityManager

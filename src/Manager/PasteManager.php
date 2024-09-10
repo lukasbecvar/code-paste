@@ -18,17 +18,20 @@ use Symfony\Component\HttpFoundation\Response;
 class PasteManager
 {
     private SiteUtil $siteUtil;
+    private LogManager $logManager;
     private SecurityUtil $securityUtil;
     private ErrorManager $errorManager;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         SiteUtil $siteUtil,
+        LogManager $logManager,
         SecurityUtil $securityUtil,
         ErrorManager $errorManager,
         EntityManagerInterface $entityManager
     ) {
         $this->siteUtil = $siteUtil;
+        $this->logManager = $logManager;
         $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
@@ -76,6 +79,9 @@ class PasteManager
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
+
+        // log new paste save
+        $this->logManager->externalLog('new paste saved: ' . $token);
     }
 
     /**
