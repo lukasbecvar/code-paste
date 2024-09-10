@@ -1,13 +1,15 @@
 {% extends 'common/base.twig' %}
 
-{# PASTE CONTENT VIEW #}
+{# PASTE CONTENT VIEW COMPONENT #}
 {% block body %}
     {# LOAD SYNTAX HIGHLIGHTER #}
     {{ encore_entry_script_tags('code-paste-js') }}
 
     <div style="position: relative;">
+        {# COPY BUTTON #}
         <button id="copy-button">Copy</button>
-
+        
+        {# PASTE CONTENT #}
         <code>
             <pre id="content">
                 <code>{{ paste|raw }}</code>
@@ -15,6 +17,7 @@
         </code>
     </div>
 
+    {# COPY BUTTON SCRIPT #}
     <script>
         document.getElementById('copy-button').addEventListener('click', function() {
             var content = document.getElementById('content').innerText;

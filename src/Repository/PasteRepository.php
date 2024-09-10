@@ -7,7 +7,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
+ * Class PasteRepository
+ * 
  * @extends ServiceEntityRepository<Paste>
+ * 
+ * @package App\Repository
  */
 class PasteRepository extends ServiceEntityRepository
 {
