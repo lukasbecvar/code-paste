@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * Class ErrorController
  *
- * Error controller is a handler for visitors redirect
  * Main controller that shows error pages by error code
  *
  * @package App\Controller

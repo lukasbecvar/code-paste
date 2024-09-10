@@ -1,17 +1,19 @@
+/* code-paste scrollbar style */
 ::-webkit-scrollbar {
 	width: 12px;
+	height: 12px;
 } 
 
 ::-webkit-scrollbar-track {
-	background: rgb(20,20,20);
+	background-color: #101214;
 }
  
 ::-webkit-scrollbar-thumb {
-	background: #40444b;
+	background-color: #404d68;
 	-webkit-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 } 
 
 ::-webkit-scrollbar-thumb:hover {
-	background: #5c646b;
+	background-color: #384f81;
 }

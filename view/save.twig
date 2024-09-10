@@ -1,46 +1,46 @@
 {% extends 'common/base.twig' %}
 
+{# SAVE NEW PASTE VIEW #}
 {% block body %}
-<script>
-    function save() {
-        var name = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (var i = 0; i < 15; i++) {
-            name += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        document.getElementById("file").value = name;
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/save", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                window.open("/view?f=" + name, "_self");
+    <script>
+        function save() {
+            var name = ""
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+            for (var i = 0; i < 15; i++) {
+                name += possible.charAt(Math.floor(Math.random() * possible.length))
             }
-        };
-        xhr.send(new URLSearchParams(new FormData(document.getElementById("form"))).toString());
-    }
+            document.getElementById("file").value = name
 
-    window.addEventListener('keydown', function (event) {
-        if (event.ctrlKey || event.metaKey) {
-            switch (event.key.toLowerCase()) {
-                case 's':
-                    event.preventDefault();
-                    save();
-                break;
+            var xhr = new XMLHttpRequest()
+            xhr.open("POST", "/save", true)
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    window.open("/view?f=" + name, "_self")
+                }
             }
+            xhr.send(new URLSearchParams(new FormData(document.getElementById("form"))).toString())
         }
-    });
-</script>
+        window.addEventListener('keydown', function (event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch (event.key.toLowerCase()) {
+                    case 's':
+                        event.preventDefault()
+                        save()
+                    break
+                }
+            }
+        })
+    </script>
 
-{# SAVE BUTTON #}
-<a class="icon" onClick="save()">
-    <img src={{ asset('assets/images/save.svg') }}>
-</a>
+    {# SAVE BUTTON #}
+    <a class="icon" onClick="save()">
+        <img src={{ asset('assets/images/save.svg') }}>
+    </a>
 
-{# PASTE TEXTAREA FORM #}
-<form method="post" id="form">
-    <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="text" name="paste-content" maxlength="30000"></textarea>
-    <input type="hidden" id="file" name="token">
-</form>
+    {# PASTE TEXTAREA FORM #}
+    <form method="post" id="form">
+        <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" id="text" name="paste-content" maxlength="100000"></textarea>
+        <input type="hidden" id="file" name="token">
+    </form>
 {% endblock %}

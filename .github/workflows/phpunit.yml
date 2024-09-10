@@ -1,4 +1,4 @@
-# run unit tests action
+# run unit tests with PHPUnit
 name: PHPUnit Tests
 
 on:

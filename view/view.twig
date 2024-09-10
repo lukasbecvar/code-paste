@@ -1,12 +1,13 @@
 {% extends 'common/base.twig' %}
 
+{# PASTE CONTENT VIEW #}
 {% block body %}
+    {# LOAD SYNTAX HIGHLIGHTER #}
+    {{ encore_entry_script_tags('code-paste-js') }}
 
-{{ encore_entry_script_tags('code-paste-js') }}
-
-<code>
-    <pre id="content">
-        <code>{{ paste|raw }}</code>
-    </pre>
-</code>
+    <code>
+        <pre id="content">
+            <code>{{ paste|raw }}</code>
+        </pre>
+    </code>
 {% endblock %}

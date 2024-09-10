@@ -2,14 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Paste;
 use App\Manager\PasteManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class PasteController
+ *
+ * Main controller for code paste functionality
+ *
+ * @package App\Controller
+ */
 class PasteController extends AbstractController
 {
     private PasteManager $pasteManager;
@@ -19,28 +24,55 @@ class PasteController extends AbstractController
         $this->pasteManager = $pasteManager;
     }
 
+    /**
+     * Index action
+     *
+     * @return Response The save paste form response
+     */
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
         return $this->render('save.twig');
     }
 
+    /**
+     * Save paste action
+     *
+     * @param Request $request The request object
+     *
+     * @return Response The redirect response
+     */
     #[Route('/save', methods:['POST'], name: 'app_save_paste')]
     public function save(Request $request): Response
     {
-        $content = $request->request->get('paste-content');
-        $token = $request->request->get('token');
+        // get paste data
+        $content = (string) $request->request->get('paste-content');
+        $token = (string) $request->request->get('token');
 
+        // save paste
         $this->pasteManager->savePaste($token, $content);
 
+        // redirect to view paste page
         return $this->redirectToRoute('app_view_paste', ['f' => $token]);
     }
 
+    /**
+     * View paste action
+     *
+     * @param Request $request The request object
+     *
+     * @return Response The paste view response
+     */
     #[Route('/view', name: 'app_view_paste')]
     public function view(Request $request): Response
     {
-        $paste = $this->pasteManager->getPaste($request->query->get('f'));
+        // get paste file from request parameter
+        $pasteFile = (string) $request->request->get('f');
 
+        // get paste content
+        $paste = $this->pasteManager->getPaste($pasteFile);
+
+        // return paste view
         return $this->render('view.twig', [
             'paste' => $paste,
         ]);

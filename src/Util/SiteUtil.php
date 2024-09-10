@@ -55,4 +55,14 @@ class SiteUtil
 
         return false;
     }
+
+    /**
+     * Check if is the encryption mode enabled
+     *
+     * @return bool Encryption mode status
+     */
+    public function isEncryptionMode(): bool
+    {
+        return $_ENV['ENCRYPTION_MODE'] === 'true';
+    }
 }

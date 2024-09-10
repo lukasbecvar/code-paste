@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <title>Code paste</title>
     <meta content="Text and code sharing tool" name="description">
-    <link rel="icon" href={{ asset('assets/images/favicon.png') }} type="image/x-icon"/>
-
-    {{ encore_entry_link_tags('paste-add-css') }}
+    <link rel="icon" href={{ asset('assets/images/save.svg') }} type="image/x-icon"/>
+    {# LINK ASSETS #}
     {{ encore_entry_link_tags('scrollbar-css') }}
-    {{ encore_entry_link_tags('paste-view-css') }}
-    {{ encore_entry_link_tags('atom-one-dark-css') }}
+    {{ encore_entry_link_tags('code-paste-css') }}
 </head>
 <body>
     {% block body %}{% endblock %}

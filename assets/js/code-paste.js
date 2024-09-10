@@ -1,4 +1,4 @@
-/* becvar-site: code paste function */ 
+/* code-paste view highlight function */ 
 import hljs from 'highlight.js';
 
 // init code highligh

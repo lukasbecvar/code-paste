@@ -6,6 +6,13 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PasteRepository;
 
+/**
+ * Class Paste
+ *
+ * The paste entity class
+ *
+ * @package App\Entity
+ */
 #[ORM\Table(name: 'pastes')]
 #[ORM\Entity(repositoryClass: PasteRepository::class)]
 class Paste
@@ -15,7 +22,7 @@ class Paste
     #[ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $token = null;
 
     #[ORM\Column(type: Types::TEXT)]
