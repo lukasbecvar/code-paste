@@ -5,9 +5,24 @@
     {# LOAD SYNTAX HIGHLIGHTER #}
     {{ encore_entry_script_tags('code-paste-js') }}
 
-    <code>
-        <pre id="content">
-            <code>{{ paste|raw }}</code>
-        </pre>
-    </code>
+    <div style="position: relative;">
+        <button id="copy-button">Copy</button>
+
+        <code>
+            <pre id="content">
+                <code>{{ paste|raw }}</code>
+            </pre>
+        </code>
+    </div>
+
+    <script>
+        document.getElementById('copy-button').addEventListener('click', function() {
+            var content = document.getElementById('content').innerText;
+            navigator.clipboard.writeText(content).then(function() {
+                console.log('Copied to clipboard!');
+            }).catch(function(error) {
+                console.log('Copy failed: ' + error);
+            });
+        });
+    </script>
 {% endblock %}

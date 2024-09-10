@@ -1,3 +1,4 @@
+                
 /* code-paste frontend style */
 * {
     background-color: #282c34;
@@ -38,6 +39,38 @@ textarea {
     pointer-events: none;
 }
 
+#copy-button {
+    z-index: 1;
+    position: fixed;
+    float: right;
+    right: 5px;
+    top: 5px;
+    border: 1px solid rgb(55, 55, 255);
+    background-color: rgb(74, 74, 255);
+    text-align: center;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 3px;
+}
+
+#copy-button:hover {
+    background-color: rgb(59, 59, 255);
+    cursor: pointer;
+}
+
+code {
+    position: absolute;
+}
+
+#content {
+    z-index: 2;
+    margin-top: -25px;
+    margin-left: -5px;
+    margin-right: 5px;
+}
+
 td.hljs-ln-numbers {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -49,14 +82,6 @@ td.hljs-ln-numbers {
     vertical-align: top;
     padding-right: 5px;
     color: lightgray;
-}
-
-code {
-    position: absolute;
-}
-
-#content {
-    margin-top: -20px;
 }
 
 .hljs {

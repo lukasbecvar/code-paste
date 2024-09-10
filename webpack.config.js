@@ -7,11 +7,13 @@ Encore
     .setPublicPath('/assets')
 
     // register css
+    .addEntry('loading-css', './assets/css/loading.css')
     .addEntry('scrollbar-css', './assets/css/scrollbar.css')
     .addEntry('code-paste-css', './assets/css/code-paste.css')
     .addEntry('error-page-css', './assets/css/error-page.css')
 
     .addEntry('code-paste-js', './assets/js/code-paste.js')
+    .addEntry('loading-js', './assets/js/loading.js')
 
     // copy static assets
     .copyFiles({

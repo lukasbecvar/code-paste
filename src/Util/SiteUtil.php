@@ -2,6 +2,8 @@
 
 namespace App\Util;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
 /**
  * Class SiteUtil
  *
@@ -11,6 +13,22 @@ namespace App\Util;
  */
 class SiteUtil
 {
+    private KernelInterface $kernelInterface;
+
+    public function __construct(KernelInterface $kernelInterface)
+    {
+        $this->kernelInterface = $kernelInterface;
+    }
+
+    /** Get the application root directory
+     *
+     * @return string The application root directory
+     */
+    public function getAppRootDir(): string
+    {
+        return $this->kernelInterface->getProjectDir();
+    }
+
     /**
      * Check if the connection is secure (SSL)
      *

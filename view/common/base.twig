@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Code paste</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Text and code sharing tool" name="description">
     <link rel="icon" href={{ asset('assets/images/save.svg') }} type="image/x-icon"/>
     {# LINK ASSETS #}
+    {{ encore_entry_link_tags('loading-css') }}
     {{ encore_entry_link_tags('scrollbar-css') }}
     {{ encore_entry_link_tags('code-paste-css') }}
 </head>
 <body>
-    {% block body %}{% endblock %}
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+    </div>
+    <main id="component" style="display:none;">
+        {% block body %}{% endblock %}
+    </main>
+    {{ encore_entry_script_tags('loading-js') }}
 </body>
 </html>

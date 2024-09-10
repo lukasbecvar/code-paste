@@ -1,0 +1,141 @@
+<?php
+
+namespace App\Tests\Manager;
+
+use App\Entity\Paste;
+use App\Util\SiteUtil;
+use App\Util\SecurityUtil;
+use App\Manager\PasteManager;
+use App\Manager\ErrorManager;
+use PHPUnit\Framework\TestCase;
+use App\Repository\PasteRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+
+/**
+ * Class PasteManagerTest
+ *
+ * Test cases for PasteManager class
+ *
+ * @package App\Tests\Manager
+ */
+class PasteManagerTest extends TestCase
+{
+    private PasteManager $pasteManager;
+    private SecurityUtil $securityUtil;
+    private SiteUtil & MockObject $siteUtil;
+    private ErrorManager & MockObject $errorManager;
+    private EntityManagerInterface & MockObject $entityManager;
+
+    protected function setUp(): void
+    {
+        // mock dependencies
+        $this->siteUtil = $this->createMock(SiteUtil::class);
+        $this->securityUtil = $this->createMock(SecurityUtil::class);
+        $this->errorManager = $this->createMock(ErrorManager::class);
+        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+
+        // init paste manager
+        $this->pasteManager = new PasteManager(
+            $this->siteUtil,
+            $this->securityUtil,
+            $this->errorManager,
+            $this->entityManager
+        );
+    }
+
+    /**
+     * Test save paste
+     *
+     * @return void
+     */
+    public function testSavePaste(): void
+    {
+        // mock the entity manager persist and flush methods
+        $this->entityManager->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf(Paste::class));
+        $this->entityManager->expects($this->once())
+            ->method('flush');
+
+        // mock siteUtil to return false for encryption mode
+        $this->siteUtil->expects($this->once())
+            ->method('isEncryptionMode')
+            ->willReturn(false);
+
+        // call the savePaste method
+        $this->pasteManager->savePaste('token123', 'test content');
+    }
+
+    /**
+     * Test save too long paste
+     *
+     * @return void
+     */
+    public function testSavePasteWithLongContent(): void
+    {
+        // mock error manager to expect handleError to be called
+        $this->errorManager->expects($this->once())
+            ->method('handleError')
+            ->with('paste content is too long', 400);
+
+        // call the savePaste method with long content
+        $this->pasteManager->savePaste('token123', str_repeat('a', 200001));
+    }
+
+    public function testGetPaste(): void
+    {
+        // mock repository behavior
+        $paste = new Paste();
+        $paste->setToken('token123');
+        $paste->setContent('test content');
+
+        $repo = $this->createMock(PasteRepository::class);
+        $repo->expects($this->once())
+            ->method('findOneBy')
+            ->with(['token' => 'token123'])
+            ->willReturn($paste);
+
+        // mock entity manager
+        $this->entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with(Paste::class)
+            ->willReturn($repo);
+
+        // call the getPaste method and assert the content
+        $content = $this->pasteManager->getPaste('token123');
+
+        // assert the content
+        $this->assertEquals('test content', $content);
+    }
+
+    /**
+     * Test get paste not found
+     *
+     * @return void
+     */
+    public function testGetPasteNotFound(): void
+    {
+        // mock repository to return null
+        $repo = $this->createMock(PasteRepository::class);
+        $repo->expects($this->once())
+            ->method('findOneBy')
+            ->with(['token' => 'token123'])
+            ->willReturn(null);
+        $this->entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with(Paste::class)
+            ->willReturn($repo);
+
+        // expect errorManager to handle not found error
+        $this->errorManager->expects($this->once())
+            ->method('handleError')
+            ->with('paste not found', 404);
+
+        // call the getPaste method and assert null return
+        $content = $this->pasteManager->getPaste('token123');
+
+        // assert result
+        $this->assertNull($content);
+    }
+}

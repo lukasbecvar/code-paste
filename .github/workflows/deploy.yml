@@ -1,0 +1,35 @@
+# deploy app to the production server
+name: Deploy
+
+on:
+  release:
+    types: [created]
+  
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # code checkout
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # deploy to the server using SSH
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+
+        # script to run on the server
+        script: |
+          # go to the project directory
+          cd /services/website/code-paste
+
+          # pull the latest changes
+          git pull
+
+          # run the upgrade script
+          sh scripts/upgrade.sh
