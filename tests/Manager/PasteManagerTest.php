@@ -57,15 +57,11 @@ class PasteManagerTest extends TestCase
     {
         // mock the entity manager persist and flush methods
         $this->entityManager->expects($this->once())
-            ->method('persist')
-            ->with($this->isInstanceOf(Paste::class));
-        $this->entityManager->expects($this->once())
-            ->method('flush');
+            ->method('persist')->with($this->isInstanceOf(Paste::class));
+        $this->entityManager->expects($this->once())->method('flush');
 
         // mock siteUtil to return false for encryption mode
-        $this->siteUtil->expects($this->once())
-            ->method('isEncryptionMode')
-            ->willReturn(false);
+        $this->siteUtil->expects($this->once())->method('isEncryptionMode')->willReturn(false);
 
         // call the savePaste method
         $this->pasteManager->savePaste('token123', 'test content');
@@ -80,8 +76,7 @@ class PasteManagerTest extends TestCase
     {
         // mock error manager to expect handleError to be called
         $this->errorManager->expects($this->once())
-            ->method('handleError')
-            ->with('paste content is too long', 400);
+            ->method('handleError')->with('paste content is too long', 400);
 
         // call the savePaste method with long content
         $this->pasteManager->savePaste('token123', str_repeat('a', 200001));
@@ -96,15 +91,11 @@ class PasteManagerTest extends TestCase
 
         $repo = $this->createMock(PasteRepository::class);
         $repo->expects($this->once())
-            ->method('findOneBy')
-            ->with(['token' => 'token123'])
-            ->willReturn($paste);
+            ->method('findOneBy')->with(['token' => 'token123'])->willReturn($paste);
 
         // mock entity manager
         $this->entityManager->expects($this->once())
-            ->method('getRepository')
-            ->with(Paste::class)
-            ->willReturn($repo);
+            ->method('getRepository')->with(Paste::class)->willReturn($repo);
 
         // call the getPaste method and assert the content
         $content = $this->pasteManager->getPaste('token123');
@@ -123,18 +114,12 @@ class PasteManagerTest extends TestCase
         // mock repository to return null
         $repo = $this->createMock(PasteRepository::class);
         $repo->expects($this->once())
-            ->method('findOneBy')
-            ->with(['token' => 'token123'])
-            ->willReturn(null);
+            ->method('findOneBy')->with(['token' => 'token123'])->willReturn(null);
         $this->entityManager->expects($this->once())
-            ->method('getRepository')
-            ->with(Paste::class)
-            ->willReturn($repo);
+            ->method('getRepository')->with(Paste::class)->willReturn($repo);
 
         // expect errorManager to handle not found error
-        $this->errorManager->expects($this->once())
-            ->method('handleError')
-            ->with('paste not found', 404);
+        $this->errorManager->expects($this->once())->method('handleError')->with('paste not found', 404);
 
         // call the getPaste method and assert null return
         $content = $this->pasteManager->getPaste('token123');

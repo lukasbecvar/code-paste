@@ -1,4 +1,4 @@
-/* code-paste view highlight function */ 
+/* view highlight function */ 
 import hljs from 'highlight.js';
 
 // init code highligh

@@ -1,4 +1,4 @@
-/* code-paste frontend webpack builder */
+/* frontend webpack builder */
 const Encore = require('@symfony/webpack-encore');
 
 Encore

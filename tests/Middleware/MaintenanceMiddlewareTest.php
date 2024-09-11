@@ -58,14 +58,11 @@ class MaintenanceMiddlewareTest extends TestCase
 
         // mock the error manager
         $this->errorManagerMock->expects($this->once())
-            ->method('getErrorView')
-            ->with('maintenance')
-            ->willReturn('Maintenance Mode Content');
+            ->method('getErrorView')->with('maintenance')->willReturn('Maintenance Mode Content');
 
         // expect the response
         $event->expects($this->once())
-            ->method('setResponse')
-            ->with($this->callback(function ($response) {
+            ->method('setResponse')->with($this->callback(function ($response) {
                 return $response instanceof Response &&
                     $response->getStatusCode() === 503 &&
                     $response->getContent() === 'Maintenance Mode Content';
