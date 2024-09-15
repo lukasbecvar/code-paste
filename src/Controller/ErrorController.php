@@ -59,7 +59,8 @@ class ErrorController extends AbstractController
     #[Route('/error/notfound', methods: ['GET'], name: 'error_404')]
     public function errorHandle404(): Response
     {
-        return new Response($this->errorManager->getErrorView(Response::HTTP_NOT_FOUND));
+        $code = Response::HTTP_NOT_FOUND;
+        return new Response($this->errorManager->getErrorView($code), $code);
     }
 
     /**
@@ -80,6 +81,6 @@ class ErrorController extends AbstractController
         }
 
         // return error view
-        return new Response($this->errorManager->getErrorView($statusCode));
+        return new Response($this->errorManager->getErrorView($statusCode), $statusCode);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Exception\AppErrorException;
 use Symfony\Component\String\ByteString;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -40,13 +41,30 @@ class PasteControllerTest extends WebTestCase
     }
 
     /**
+     * Test save empty paste
+     *
+     * @return void
+     */
+    public function testSaveEmptyPaste(): void
+    {
+        // expect error exception
+        $this->expectException(AppErrorException::class);
+
+        // make request
+        $this->client->request('POST', '/save', [
+            'paste-content' => '',
+            'token' => ByteString::fromRandom(16),
+        ]);
+    }
+
+    /**
      * Test save new paste
      *
      * @return void
      */
     public function testSaveNewPaste(): void
     {
-        // make get request
+        // make request
         $this->client->request('POST', '/save', [
             'paste-content' => 'test content',
             'token' => ByteString::fromRandom(16),

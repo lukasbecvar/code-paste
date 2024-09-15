@@ -47,6 +47,14 @@ class PasteManager
      */
     public function savePaste(string $token, string $content): void
     {
+        // check if content is not empty
+        if ($content == null && $content == '') {
+            $this->errorManager->handleError(
+                'paste content is empty',
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         // check max content length
         if (strlen($content) > 200000) {
             $this->errorManager->handleError(
