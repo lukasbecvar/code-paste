@@ -20,6 +20,16 @@ class SiteUtil
         $this->kernelInterface = $kernelInterface;
     }
 
+    /**
+     * Get the HTTP host
+     *
+     * @return string|null The HTTP host
+     */
+    public function getHttpHost(): ?string
+    {
+        return $_SERVER['HTTP_HOST'];
+    }
+
     /** Get the application root directory
      *
      * @return string The application root directory

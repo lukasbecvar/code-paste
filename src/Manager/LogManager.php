@@ -26,13 +26,13 @@ class LogManager
     /**
      * Send log to external log
      *
-     * @param string $value The value of the log
+     * @param string $message The message of the log
      *
      * @throws \App\Exception\AppErrorException Error to send log to external log
      *
      * @return void
      */
-    public function externalLog(string $value): void
+    public function externalLog(string $message): void
     {
         if (!($_ENV['EXTERNAL_LOG_ENABLED'] == 'true')) {
             return;
@@ -44,7 +44,7 @@ class LogManager
 
         try {
             $this->jsonUtil->getJson(
-                target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $value) . '&level=4',
+                target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $message) . '&level=4',
                 method: 'POST'
             );
         } catch (\Exception $e) {

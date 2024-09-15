@@ -88,8 +88,11 @@ class PasteManager
             );
         }
 
+        // get connection protocol
+        $protocol = $this->siteUtil->isSsl() ? 'https' : 'http';
+
         // log new paste save
-        $this->logManager->externalLog('new paste saved: ' . $token);
+        $this->logManager->externalLog('new paste saved: ' . $protocol . '://' . $this->siteUtil->getHttpHost() . '/view?f=' . $token);
     }
 
     /**
