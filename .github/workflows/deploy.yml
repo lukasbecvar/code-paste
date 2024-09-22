@@ -24,27 +24,11 @@ jobs:
 
         # script to run on the server
         script: |
-          # cloning the repository if it is not found
-          if [ ! -d "/services/website/code-paste" ]; then
-            sudo mkdir -p /services/website && \
-            sudo git clone https://github.com/lordbecvold/code-paste /services/website/code-paste
-          fi
-
           # go to the project directory
-          if [ -d "/services/website/code-paste" ]; then
-            cd /services/website/code-paste
-          else
-            echo "Directory /services/website/code-paste not found."
-            exit 1
-          fi
+          cd /services/website/code-paste
 
           # pull the latest changes
-          git pull || { echo "Git pull failed"; exit 1; }
+          git pull
 
-          # run the upgrade script if it exists
-          if [ -f "scripts/upgrade.sh" ]; then
-            sh scripts/upgrade.sh
-          else
-            echo "Upgrade script not found."
-            exit 1
-          fi
+          # run the upgrade script
+          sh scripts/upgrade.sh
