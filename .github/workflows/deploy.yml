@@ -24,6 +24,11 @@ jobs:
 
         # script to run on the server
         script: |
+          # cloning the repository if it is not found
+          [ ! -d "/services/website/code-paste" ] && \
+          sudo mkdir -p /services/website && \
+          sudo git clone https://github.com/lordbecvold/code-paste /services/website/code-paste
+
           # go to the project directory
           cd /services/website/code-paste
 
