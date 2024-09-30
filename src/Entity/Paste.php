@@ -14,6 +14,8 @@ use App\Repository\PasteRepository;
  * @package App\Entity
  */
 #[ORM\Table(name: 'pastes')]
+#[ORM\Index(name: 'pastes_token_idx', columns: ['token'])]
+#[ORM\Index(name: 'pastes_ip_address_idx', columns: ['ip_address'])]
 #[ORM\Entity(repositoryClass: PasteRepository::class)]
 class Paste
 {
@@ -30,6 +32,9 @@ class Paste
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $time = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $ip_address = null;
 
     public function getId(): ?int
     {
@@ -68,6 +73,18 @@ class Paste
     public function setTime(\DateTimeInterface $time): static
     {
         $this->time = $time;
+
+        return $this;
+    }
+
+    public function getIpAddress(): ?string
+    {
+        return $this->ip_address;
+    }
+
+    public function setIpAddress(string $ip_address): static
+    {
+        $this->ip_address = $ip_address;
 
         return $this;
     }

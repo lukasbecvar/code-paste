@@ -8,6 +8,7 @@ use App\Util\SecurityUtil;
 use App\Manager\LogManager;
 use App\Manager\PasteManager;
 use App\Manager\ErrorManager;
+use App\Util\VisitorInfoUtil;
 use PHPUnit\Framework\TestCase;
 use App\Repository\PasteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,7 @@ class PasteManagerTest extends TestCase
     private SecurityUtil $securityUtil;
     private SiteUtil & MockObject $siteUtil;
     private ErrorManager & MockObject $errorManager;
+    private VisitorInfoUtil & MockObject $visitorInfoUtil;
     private EntityManagerInterface & MockObject $entityManager;
 
     protected function setUp(): void
@@ -36,6 +38,7 @@ class PasteManagerTest extends TestCase
         $this->logManager = $this->createMock(LogManager::class);
         $this->securityUtil = $this->createMock(SecurityUtil::class);
         $this->errorManager = $this->createMock(ErrorManager::class);
+        $this->visitorInfoUtil = $this->createMock(VisitorInfoUtil::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
         // init paste manager
@@ -44,6 +47,7 @@ class PasteManagerTest extends TestCase
             $this->logManager,
             $this->securityUtil,
             $this->errorManager,
+            $this->visitorInfoUtil,
             $this->entityManager
         );
     }
@@ -63,6 +67,9 @@ class PasteManagerTest extends TestCase
         // mock siteUtil to return false for encryption mode
         $this->siteUtil->expects($this->once())->method('isEncryptionMode')->willReturn(false);
 
+        // mock visitor info util to return IP address
+        $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');
+
         // call the savePaste method
         $this->pasteManager->savePaste('token123', 'test content');
     }
@@ -77,6 +84,9 @@ class PasteManagerTest extends TestCase
         // mock error manager to expect handleError to be called
         $this->errorManager->expects($this->once())
             ->method('handleError')->with('paste content is too long', 400);
+
+        // mock visitor info util to return IP address
+        $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');
 
         // call the savePaste method with long content
         $this->pasteManager->savePaste('token123', str_repeat('a', 200001));

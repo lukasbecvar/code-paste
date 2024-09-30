@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Paste;
 use App\Util\SiteUtil;
 use App\Util\SecurityUtil;
+use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,6 +22,7 @@ class PasteManager
     private LogManager $logManager;
     private SecurityUtil $securityUtil;
     private ErrorManager $errorManager;
+    private VisitorInfoUtil $visitorInfoUtil;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -28,6 +30,7 @@ class PasteManager
         LogManager $logManager,
         SecurityUtil $securityUtil,
         ErrorManager $errorManager,
+        VisitorInfoUtil $visitorInfoUtil,
         EntityManagerInterface $entityManager
     ) {
         $this->siteUtil = $siteUtil;
@@ -35,6 +38,7 @@ class PasteManager
         $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
+        $this->visitorInfoUtil = $visitorInfoUtil;
     }
 
     /**
@@ -47,6 +51,18 @@ class PasteManager
      */
     public function savePaste(string $token, string $content): void
     {
+        // get visitor IP address
+        $ipAddress = $this->visitorInfoUtil->getIP();
+
+        // check if IP address is null
+        if ($ipAddress == null) {
+            $this->errorManager->handleError(
+                'error getting visitor IP address',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+            return;
+        }
+
         // check if content is not empty
         if ($content == null && $content == '') {
             $this->errorManager->handleError(
@@ -75,6 +91,7 @@ class PasteManager
         $paste->setToken($token);
         $paste->setContent($content);
         $paste->setTime(new \DateTime());
+        $paste->setIpAddress($ipAddress);
 
         // save paste to database
         try {
