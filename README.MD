@@ -30,4 +30,4 @@ Free webapp service for storing and sharing text and code snippets.
 5. Configure DATABASE_DRIVER, DATABASE_HOST, DATABASE_PORT, DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD
 
 ## License
-This software is licensed under the [MIT license](https://github.com/lordbecvold/code-paste/blob/main/LICENSE).
+This software is licensed under the [MIT license](https://github.com/lukasbecvar/code-paste/blob/main/LICENSE).
