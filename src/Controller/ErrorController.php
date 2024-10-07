@@ -64,20 +64,23 @@ class ErrorController extends AbstractController
     }
 
     /**
-     * Handles all errors (this is for error manager handler)
+     * Show the error page by exception
      *
-     * @param \Throwable $exception The thrown exception
+     * @param \Throwable $exception The exception object
      *
-     * @return Response The error page response
+     * @throws AppErrorException The exception object
+     *
+     * @return Response The error view
      */
     public function show(\Throwable $exception): Response
     {
-        // get exception data
-        $statusCode = $exception instanceof HttpException ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+        // get exception code
+        $statusCode = $exception instanceof HttpException
+            ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
 
         // handle errors in dev mode
         if ($this->siteUtil->isDevMode()) {
-            throw new AppErrorException($exception->getMessage());
+            throw new AppErrorException($statusCode, $exception->getMessage());
         }
 
         // return error view

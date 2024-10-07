@@ -10,23 +10,24 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Class ExceptionEventSubscriber
  *
- * Subscriber to handle error exceptions
+ * The subscriber for the exception event
  *
- * @package App\EventSubscriber
+ * @package App\Event\Subscriber
  */
 class ExceptionEventSubscriber implements EventSubscriberInterface
 {
     private LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+    ) {
         $this->logger = $logger;
     }
 
     /**
-     * Returns an array of event names this subscriber wants to listen to
+     * Get the subscribed events
      *
-     * @return array<string> The event names to listen to
+     * @return array<string> The subscribed events
      */
     public static function getSubscribedEvents(): array
     {
@@ -36,18 +37,26 @@ class ExceptionEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Method called when the KernelEvents::EXCEPTION event is dispatched
+     * Handle the exception event
      *
-     * @param ExceptionEvent $event The event object
+     * @param ExceptionEvent $event The exception event
      *
      * @return void
      */
     public function onKernelException(ExceptionEvent $event): void
     {
+        // get the error caller
+        $errorCaler = $event->getThrowable()->getTrace()[0]['function'];
+
         // get the error message
         $message = $event->getThrowable()->getMessage();
 
-        // log the error message with monolog
-        $this->logger->critical($message);
+        // check if the error caller is the logger
+        if ($errorCaler != 'handleError') {
+            return;
+        }
+
+        // log the error message with monolog (file storage)
+        $this->logger->error($message);
     }
 }
