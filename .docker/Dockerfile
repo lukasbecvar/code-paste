@@ -17,10 +17,3 @@ RUN docker-php-ext-install pdo_mysql pdo intl
 
 # install OPCache
 RUN docker-php-ext-install opcache
-
-# install APCu
-RUN pecl install apcu \
-    && docker-php-ext-enable apcu
-
-# enable apache rewrite module
-RUN a2enmod rewrite

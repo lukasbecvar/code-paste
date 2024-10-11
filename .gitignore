@@ -17,7 +17,7 @@ composer.lock
 package-lock.json
 
 # docker services
-/_docker/services
+/.docker/services
 
 # test files
 .phpcs-cache

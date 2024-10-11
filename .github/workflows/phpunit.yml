@@ -5,13 +5,14 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   phpunit:
     name: Run PHPUnit
     runs-on: ubuntu-latest
 
-    # required services
+    # setup mysql service
     services:
       mysql:
         image: mysql:latest
@@ -21,30 +22,41 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-    # phpunit test process
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # setup PHP environment
+      # setup PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.3
-          extensions: mbstring, intl, pdo_mysql, pdo, mysqli, zip
+          extensions: mbstring, intl, pdo_mysql, pdo, zip
 
       # install dependencies
       - name: Install dependencies
-        run: sh scripts/install.sh
+        run: composer install --no-interaction --no-progress --no-suggest
       
+      # install node-modules
+      - name: Install node-modules
+        run: npm install --loglevel=error
+
+      # build assets
+      - name: Build assets
+        run: npm run build
+
+      # create database
+      - name: Create database
+        run: php bin/console doctrine:database:create --if-not-exists --env=test
+
       # migrate database
       - name: Migrate database
-        run: sh scripts/migrate.sh
-
+        run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
+        
       # load testing data
       - name: Load fixtures
         run: php bin/console doctrine:fixtures:load --no-interaction --env=test
 
       # run PHPUnit tests
       - name: Run PHPUnit tests
-        run: php bin/phpunit
+        run: php ./bin/phpunit

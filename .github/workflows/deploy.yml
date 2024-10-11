@@ -27,8 +27,36 @@ jobs:
           # go to the project directory
           cd /services/website/code-paste
 
+          # stop web server
+          php bin/console app:toggle:maintenance
+          sudo systemctl stop apache2
+
+          # clear requirements & cache
+          sudo sh scripts/clear.sh
+
           # pull the latest changes
           git pull
 
-          # run the upgrade script
-          sh scripts/upgrade.sh
+          # set the environment to production
+          sed -i 's/^\(APP_ENV=\)dev/\1prod/' .env
+
+          # install dependencies
+          composer install --no-interaction --no-progress --no-suggest
+
+          # install node-modules frontend packages
+          npm install --loglevel=error
+
+          # build assets
+          npm run build
+
+          # migrate database to latest version
+          php bin/console doctrine:database:create --if-not-exists
+          php bin/console doctrine:migrations:migrate --no-interaction
+
+          # fix storage permissions
+          sudo chmod -R 777 var/
+          sudo chown -R www-data:www-data var/
+
+          # start apache
+          sudo systemctl start apache2
+          php bin/console app:toggle:maintenance

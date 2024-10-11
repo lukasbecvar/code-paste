@@ -3,7 +3,6 @@
 namespace App\Event\Subscriber;
 
 use Psr\Log\LoggerInterface;
-use App\Exception\AppErrorException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
