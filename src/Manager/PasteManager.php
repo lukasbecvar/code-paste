@@ -3,7 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Paste;
-use App\Util\SiteUtil;
+use App\Util\AppUtil;
 use App\Util\SecurityUtil;
 use App\Util\VisitorInfoUtil;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PasteManager
 {
-    private SiteUtil $siteUtil;
+    private AppUtil $appUtil;
     private LogManager $logManager;
     private SecurityUtil $securityUtil;
     private ErrorManager $errorManager;
@@ -26,14 +26,14 @@ class PasteManager
     private EntityManagerInterface $entityManager;
 
     public function __construct(
-        SiteUtil $siteUtil,
+        AppUtil $appUtil,
         LogManager $logManager,
         SecurityUtil $securityUtil,
         ErrorManager $errorManager,
         VisitorInfoUtil $visitorInfoUtil,
         EntityManagerInterface $entityManager
     ) {
-        $this->siteUtil = $siteUtil;
+        $this->appUtil = $appUtil;
         $this->logManager = $logManager;
         $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
@@ -80,7 +80,7 @@ class PasteManager
         }
 
         // encrypt paste content
-        if ($this->siteUtil->isEncryptionMode()) {
+        if ($this->appUtil->isEncryptionMode()) {
             $content = $this->securityUtil->encryptAes($content);
         }
 
@@ -106,10 +106,10 @@ class PasteManager
         }
 
         // get connection protocol
-        $protocol = $this->siteUtil->isSsl() ? 'https' : 'http';
+        $protocol = $this->appUtil->isSsl() ? 'https' : 'http';
 
         // log new paste save
-        $this->logManager->externalLog('new paste saved: ' . $protocol . '://' . $this->siteUtil->getHttpHost() . '/view?f=' . $token);
+        $this->logManager->externalLog('new paste saved: ' . $protocol . '://' . $this->appUtil->getHttpHost() . '/view?f=' . $token);
     }
 
     /**
@@ -146,7 +146,7 @@ class PasteManager
         }
 
         // decrypt paste content
-        if ($this->siteUtil->isEncryptionMode()) {
+        if ($this->appUtil->isEncryptionMode()) {
             $content = $this->securityUtil->decryptAes($content);
         }
 

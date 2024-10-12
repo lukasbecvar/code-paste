@@ -2,16 +2,17 @@
 
 namespace App\Util;
 
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * Class SiteUtil
+ * Class AppUtil
  *
- * SiteUtil provides basic site-related methods
+ * AppUtil provides basic site-related methods
  *
  * @package App\Util
  */
-class SiteUtil
+class AppUtil
 {
     private KernelInterface $kernelInterface;
 
@@ -92,5 +93,17 @@ class SiteUtil
     public function isEncryptionMode(): bool
     {
         return $_ENV['ENCRYPTION_MODE'] === 'true';
+    }
+
+    /**
+     * Get config from yaml file
+     *
+     * @param string $configFile The config file name
+     *
+     * @return mixed The config data
+     */
+    public function getYamlConfig(string $configFile): mixed
+    {
+        return Yaml::parseFile($this->getAppRootDir() . '/config/' . $configFile);
     }
 }

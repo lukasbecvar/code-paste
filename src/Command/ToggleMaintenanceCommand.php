@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Util\SiteUtil;
+use App\Util\AppUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -19,11 +19,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'app:toggle:maintenance', description: 'Enable/disable maintenance mode')]
 class ToggleMaintenanceCommand extends Command
 {
-    private SiteUtil $siteUtil;
+    private AppUtil $appUtil;
 
-    public function __construct(SiteUtil $siteUtil)
+    public function __construct(AppUtil $appUtil)
     {
-        $this->siteUtil = $siteUtil;
+        $this->appUtil = $appUtil;
         parent::__construct();
     }
 
@@ -40,7 +40,7 @@ class ToggleMaintenanceCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         // get base .env file
-        $mainEnvFile = $this->siteUtil->getAppRootDir() . '/.env';
+        $mainEnvFile = $this->appUtil->getAppRootDir() . '/.env';
 
         // chec if .env file exists
         if (!file_exists($mainEnvFile)) {
@@ -64,7 +64,7 @@ class ToggleMaintenanceCommand extends Command
         }
 
         // get current environment file
-        $envFile = $this->siteUtil->getAppRootDir() . '/.env.' . $env;
+        $envFile = $this->appUtil->getAppRootDir() . '/.env.' . $env;
 
         // check if current environment file exists
         if (!file_exists($envFile)) {

@@ -2,6 +2,7 @@
 
 namespace App\Event\Subscriber;
 
+use App\Util\AppUtil;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -11,24 +12,25 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Class ExceptionEventSubscriber
  *
- * The subscriber for the exception event
+ * Subscriber to handle error exceptions
  *
- * @package App\Event\Subscriber
+ * @package App\EventSubscriber
  */
 class ExceptionEventSubscriber implements EventSubscriberInterface
 {
+    private AppUtil $appUtil;
     private LoggerInterface $logger;
 
-    public function __construct(
-        LoggerInterface $logger,
-    ) {
+    public function __construct(AppUtil $appUtil, LoggerInterface $logger)
+    {
         $this->logger = $logger;
+        $this->appUtil = $appUtil;
     }
 
     /**
-     * Get the subscribed events
+     * Returns an array of event names this subscriber wants to listen to
      *
-     * @return array<string> The subscribed events
+     * @return array<string> The event names to listen to
      */
     public static function getSubscribedEvents(): array
     {
@@ -38,24 +40,16 @@ class ExceptionEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Handle the exception event
+     * Method called when the KernelEvents::EXCEPTION event is dispatched
      *
-     * @param ExceptionEvent $event The exception event
+     * @param ExceptionEvent $event The event object
      *
      * @return void
      */
     public function onKernelException(ExceptionEvent $event): void
     {
-        // get the exception object
+        // get the exception
         $exception = $event->getThrowable();
-
-        // get the error caller
-        $errorCaller = $exception->getTrace()[0]['function'];
-
-        // check if the error caller is the logger
-        if ($errorCaller != 'handleError') {
-            return;
-        }
 
         // get the error message
         $message = $exception->getMessage();
@@ -69,13 +63,16 @@ class ExceptionEventSubscriber implements EventSubscriberInterface
             $statusCode = $exception->getStatusCode();
         }
 
-        // check if exception code is in the excluded codes
-        $excludedCodes = [400, 404, 426, 429, 501, 503];
-        if (in_array($statusCode, $excludedCodes)) {
-            return;
-        }
+        /** @var array<array<array<array<mixed>>>> $config monolog config */
+        $config = $this->appUtil->getYamlConfig('packages/monolog.yaml');
 
-        // log the error message with monolog (file storage)
-        $this->logger->error($message);
+        /** @var array<mixed> $excludedHttpCodes exluded http codes list */
+        $excludedHttpCodes = $config['monolog']['handlers']['filtered']['excluded_http_codes'];
+
+        // check if code is excluded from logging
+        if (!in_array($statusCode, $excludedHttpCodes)) {
+            // log the error message to exception log
+            $this->logger->error($message);
+        }
     }
 }

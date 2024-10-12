@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Paste;
-use App\Util\SiteUtil;
+use App\Util\AppUtil;
 use App\Util\SecurityUtil;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -17,12 +17,12 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
  */
 class PasteFixtures extends Fixture
 {
-    private SiteUtil $siteUtil;
+    private AppUtil $appUtil;
     private SecurityUtil $securityUtil;
 
-    public function __construct(SiteUtil $siteUtil, SecurityUtil $securityUtil)
+    public function __construct(AppUtil $appUtil, SecurityUtil $securityUtil)
     {
-        $this->siteUtil = $siteUtil;
+        $this->appUtil = $appUtil;
         $this->securityUtil = $securityUtil;
     }
 
@@ -34,7 +34,7 @@ class PasteFixtures extends Fixture
         $content = 'this is a test paste';
 
         // encrypt paste content
-        if ($this->siteUtil->isEncryptionMode()) {
+        if ($this->appUtil->isEncryptionMode()) {
             $content = $this->securityUtil->encryptAes($content);
         }
 

@@ -3,7 +3,7 @@
 namespace App\Tests\Manager;
 
 use App\Entity\Paste;
-use App\Util\SiteUtil;
+use App\Util\AppUtil;
 use App\Util\SecurityUtil;
 use App\Manager\LogManager;
 use App\Manager\PasteManager;
@@ -26,7 +26,7 @@ class PasteManagerTest extends TestCase
     private LogManager $logManager;
     private PasteManager $pasteManager;
     private SecurityUtil $securityUtil;
-    private SiteUtil & MockObject $siteUtil;
+    private AppUtil & MockObject $appUtil;
     private ErrorManager & MockObject $errorManager;
     private VisitorInfoUtil & MockObject $visitorInfoUtil;
     private EntityManagerInterface & MockObject $entityManager;
@@ -34,7 +34,7 @@ class PasteManagerTest extends TestCase
     protected function setUp(): void
     {
         // mock dependencies
-        $this->siteUtil = $this->createMock(SiteUtil::class);
+        $this->appUtil = $this->createMock(AppUtil::class);
         $this->logManager = $this->createMock(LogManager::class);
         $this->securityUtil = $this->createMock(SecurityUtil::class);
         $this->errorManager = $this->createMock(ErrorManager::class);
@@ -43,7 +43,7 @@ class PasteManagerTest extends TestCase
 
         // init paste manager
         $this->pasteManager = new PasteManager(
-            $this->siteUtil,
+            $this->appUtil,
             $this->logManager,
             $this->securityUtil,
             $this->errorManager,
@@ -64,8 +64,8 @@ class PasteManagerTest extends TestCase
             ->method('persist')->with($this->isInstanceOf(Paste::class));
         $this->entityManager->expects($this->once())->method('flush');
 
-        // mock siteUtil to return false for encryption mode
-        $this->siteUtil->expects($this->once())->method('isEncryptionMode')->willReturn(false);
+        // mock appUtil to return false for encryption mode
+        $this->appUtil->expects($this->once())->method('isEncryptionMode')->willReturn(false);
 
         // mock visitor info util to return IP address
         $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');

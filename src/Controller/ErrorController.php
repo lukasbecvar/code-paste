@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Util\SiteUtil;
+use App\Util\AppUtil;
 use App\Manager\ErrorManager;
 use App\Exception\AppErrorException;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +20,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ErrorController extends AbstractController
 {
-    private SiteUtil $siteUtil;
+    private AppUtil $appUtil;
     private ErrorManager $errorManager;
 
-    public function __construct(SiteUtil $siteUtil, ErrorManager $errorManager)
+    public function __construct(AppUtil $appUtil, ErrorManager $errorManager)
     {
-        $this->siteUtil = $siteUtil;
+        $this->appUtil = $appUtil;
         $this->errorManager = $errorManager;
     }
 
@@ -79,7 +79,7 @@ class ErrorController extends AbstractController
             ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
 
         // handle errors in dev mode
-        if ($this->siteUtil->isDevMode()) {
+        if ($this->appUtil->isDevMode()) {
             throw new AppErrorException($statusCode, $exception->getMessage());
         }
 
