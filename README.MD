@@ -19,9 +19,11 @@ Self-hosted text/code paste service with syntax highlighting and paste content e
 
 ## Installation - Production
 1. Clone the repository
-2. Install dependencies (scripts/install.sh)
-3. Create database & migration (scripts/migrate.sh)
-4. Configure apache config [apache-site.conf](./docker/configs/apache-site.conf)
+2. Install dependencies ``npm install && composer install``
+3. Build assets ``npm run build``
+4. Create database ``php bin/console doctrine:database:create --if-not-exists``
+5. Create migrations ``php bin/console doctrine:migrations:migrate --no-interaction``
+6. Configure virtualhost config [apache-site.conf](./docker/configs/apache-site.conf)
 
 ## Configuration
 1. Create your own .env file with name .env.prod and change app env in main .env
@@ -29,6 +31,13 @@ Self-hosted text/code paste service with syntax highlighting and paste content e
 3. Configure MAINTENANCE_MODE to true or false if you want to enable maintenance mode
 4. ENCRYPTION_MODE to true or false if you want to enable paste content encryption (key is APP_SECRET value in .env)
 5. Configure DATABASE_DRIVER, DATABASE_HOST, DATABASE_PORT, DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD
+
+## Requirements
+- Apache or Nginx web server with PHP support
+- NodeJS 18 or higher
+- PHP 8.3 or higher
+- Composer
+- MySQL
 
 ## License
 This software is licensed under the [MIT license](https://github.com/lukasbecvar/code-paste/blob/main/LICENSE).
