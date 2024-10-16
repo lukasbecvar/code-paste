@@ -51,13 +51,23 @@ class PasteManager
      */
     public function savePaste(string $token, string $content): void
     {
-        // get visitor IP address
+        // get visitor info
         $ipAddress = $this->visitorInfoUtil->getIP();
+        $browser = $this->visitorInfoUtil->getBrowserShortify();
 
         // check if IP address is null
         if ($ipAddress == null) {
             $this->errorManager->handleError(
                 'error getting visitor IP address',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+            return;
+        }
+
+        // check if browser is null
+        if ($browser == null) {
+            $this->errorManager->handleError(
+                'error getting visitor browser info',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
             return;
@@ -88,10 +98,11 @@ class PasteManager
         $paste = new Paste();
 
         // set paste properties
-        $paste->setToken($token);
-        $paste->setContent($content);
-        $paste->setTime(new \DateTime());
-        $paste->setIpAddress($ipAddress);
+        $paste->setToken($token)
+            ->setContent($content)
+            ->setTime(new \DateTime())
+            ->setBrowser($browser)
+            ->setIpAddress($ipAddress);
 
         // save paste to database
         try {

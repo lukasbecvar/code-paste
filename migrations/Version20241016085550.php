@@ -8,13 +8,13 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Class Version20240909120827
+ * Class Version20241016085550
  * 
- * The default database schema
+ * The migration for add browser information to pastes table
  * 
  * @package DoctrineMigrations
  */
-final class Version20240909120827 extends AbstractMigration
+final class Version20241016085550 extends AbstractMigration
 {
     /**
      * Get the description of this migration
@@ -23,7 +23,7 @@ final class Version20240909120827 extends AbstractMigration
      */
     public function getDescription(): string
     {
-        return 'The default database schema';
+        return 'Add browser information to pastes table';
     }
 
     /**
@@ -35,7 +35,7 @@ final class Version20240909120827 extends AbstractMigration
      */
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE pastes (id INT AUTO_INCREMENT NOT NULL, token VARCHAR(255) NOT NULL, content LONGTEXT NOT NULL, time TIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('ALTER TABLE pastes ADD browser VARCHAR(255) NOT NULL');
     }
 
     /**
@@ -47,6 +47,6 @@ final class Version20240909120827 extends AbstractMigration
      */
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TABLE pastes');
+        $this->addSql('ALTER TABLE pastes DROP browser');
     }
 }

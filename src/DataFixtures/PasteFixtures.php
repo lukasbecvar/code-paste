@@ -39,10 +39,11 @@ class PasteFixtures extends Fixture
         }
 
         // set paste properties
-        $test->setToken('zSc0Uh8L1gsA7a6u');
-        $test->setContent($content);
-        $test->setTime(new \DateTime());
-        $test->setIpAddress('127.0.0.1');
+        $test->setToken('zSc0Uh8L1gsA7a6u')
+            ->setContent($content)
+            ->setTime(new \DateTime())
+            ->setBrowser('datafixtures')
+            ->setIpAddress('127.0.0.1');
 
         // persist & flush paste to database
         $manager->persist($test);

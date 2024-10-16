@@ -1,6 +1,7 @@
 # Code paste
-Free webapp service for storing and sharing text and code snippets.
+Self-hosted text/code paste service with syntax highlighting and paste content encryption.
 
+## Preview
 ![Paste view](.github/images/preview.png)
 
 ## Features

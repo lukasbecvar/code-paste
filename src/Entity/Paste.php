@@ -34,6 +34,9 @@ class Paste
     private ?\DateTimeInterface $time = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $browser = null;
+
+    #[ORM\Column(length: 255)]
     private ?string $ip_address = null;
 
     public function getId(): ?int
@@ -73,6 +76,18 @@ class Paste
     public function setTime(\DateTimeInterface $time): static
     {
         $this->time = $time;
+
+        return $this;
+    }
+
+    public function getBrowser(): ?string
+    {
+        return $this->browser;
+    }
+
+    public function setBrowser(string $browser): static
+    {
+        $this->browser = $browser;
 
         return $this;
     }

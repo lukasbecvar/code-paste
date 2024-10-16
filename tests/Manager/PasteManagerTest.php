@@ -67,8 +67,9 @@ class PasteManagerTest extends TestCase
         // mock appUtil to return false for encryption mode
         $this->appUtil->expects($this->once())->method('isEncryptionMode')->willReturn(false);
 
-        // mock visitor info util to return IP address
+        // mock visitor info util
         $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');
+        $this->visitorInfoUtil->expects($this->once())->method('getBrowserShortify')->willReturn('unit-test');
 
         // call the savePaste method
         $this->pasteManager->savePaste('token123', 'test content');
@@ -85,8 +86,9 @@ class PasteManagerTest extends TestCase
         $this->errorManager->expects($this->once())
             ->method('handleError')->with('paste content is too long', 400);
 
-        // mock visitor info util to return IP address
+        // mock visitor info util
         $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');
+        $this->visitorInfoUtil->expects($this->once())->method('getBrowserShortify')->willReturn('unit-test');
 
         // call the savePaste method with long content
         $this->pasteManager->savePaste('token123', str_repeat('a', 200001));
@@ -96,8 +98,7 @@ class PasteManagerTest extends TestCase
     {
         // mock repository behavior
         $paste = new Paste();
-        $paste->setToken('token123');
-        $paste->setContent('test content');
+        $paste->setToken('token123')->setContent('test content');
 
         $repo = $this->createMock(PasteRepository::class);
         $repo->expects($this->once())
