@@ -52,8 +52,12 @@ class PasteController extends AbstractController
         // save paste
         $this->pasteManager->savePaste($token, $content);
 
-        // redirect to view paste page
-        return $this->redirectToRoute('app_view_paste', ['f' => $token]);
+        // return success response
+        return $this->json([
+            'code' => Response::HTTP_OK,
+            'status' => 'success',
+            'message' => 'Paste saved successfully',
+        ], Response::HTTP_OK);
     }
 
     /**

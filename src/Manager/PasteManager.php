@@ -100,6 +100,7 @@ class PasteManager
         // set paste properties
         $paste->setToken($token)
             ->setContent($content)
+            ->setViews(0)
             ->setTime(new \DateTime())
             ->setBrowser($browser)
             ->setIpAddress($ipAddress);
@@ -145,16 +146,20 @@ class PasteManager
         }
 
         // get paste content
+        $pasteId = $paste->getID();
         $content = $paste->getContent();
 
         // check if paste content is empty
-        if ($content == null) {
+        if ($content == null || $pasteId == null) {
             $this->errorManager->handleError(
                 'paste content is empty',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
             return null;
         }
+
+        // increase paste views
+        $this->increastePasteViews($pasteId);
 
         // decrypt paste content
         if ($this->appUtil->isEncryptionMode()) {
@@ -163,5 +168,45 @@ class PasteManager
 
         // return paste content
         return $content;
+    }
+
+    /**
+     * Increase paste views
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function increastePasteViews(int $id): void
+    {
+        // get paste from database
+        $paste = $this->entityManager->getRepository(Paste::class)->findOneBy(['id' => $id]);
+
+        // check if paste exists
+        if (!$paste) {
+            $this->errorManager->handleError(
+                'paste not found',
+                Response::HTTP_NOT_FOUND
+            );
+            return;
+        }
+
+        // get paste views
+        $views = $paste->getViews();
+
+        // increate paste views
+        $paste->setViews($views + 1);
+
+        // save paste to database
+        try {
+            $this->entityManager->persist($paste);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            // handle exception
+            $this->errorManager->handleError(
+                'error to increase paste views: ' . $e->getMessage(),
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }

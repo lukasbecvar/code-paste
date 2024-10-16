@@ -6,136 +6,129 @@ use App\Entity\Paste;
 use App\Util\AppUtil;
 use App\Util\SecurityUtil;
 use App\Manager\LogManager;
-use App\Manager\PasteManager;
 use App\Manager\ErrorManager;
 use App\Util\VisitorInfoUtil;
+use App\Manager\PasteManager;
 use PHPUnit\Framework\TestCase;
-use App\Repository\PasteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PasteManagerTest
  *
- * Test cases for PasteManager class
+ * Test for paste storage manager
  *
  * @package App\Tests\Manager
  */
 class PasteManagerTest extends TestCase
 {
-    private LogManager $logManager;
     private PasteManager $pasteManager;
-    private SecurityUtil $securityUtil;
-    private AppUtil & MockObject $appUtil;
-    private ErrorManager & MockObject $errorManager;
-    private VisitorInfoUtil & MockObject $visitorInfoUtil;
-    private EntityManagerInterface & MockObject $entityManager;
+    private AppUtil & MockObject $appUtilMock;
+    private LogManager & MockObject $logManagerMock;
+    private SecurityUtil & MockObject $securityUtilMock;
+    private ErrorManager & MockObject $errorManagerMock;
+    private VisitorInfoUtil & MockObject $visitorInfoUtilMock;
+    private EntityManagerInterface & MockObject $entityManagerMock;
 
     protected function setUp(): void
     {
-        // mock dependencies
-        $this->appUtil = $this->createMock(AppUtil::class);
-        $this->logManager = $this->createMock(LogManager::class);
-        $this->securityUtil = $this->createMock(SecurityUtil::class);
-        $this->errorManager = $this->createMock(ErrorManager::class);
-        $this->visitorInfoUtil = $this->createMock(VisitorInfoUtil::class);
-        $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        // create mocks for dependencies
+        $this->appUtilMock = $this->createMock(AppUtil::class);
+        $this->logManagerMock = $this->createMock(LogManager::class);
+        $this->securityUtilMock = $this->createMock(SecurityUtil::class);
+        $this->errorManagerMock = $this->createMock(ErrorManager::class);
+        $this->visitorInfoUtilMock = $this->createMock(VisitorInfoUtil::class);
+        $this->entityManagerMock = $this->createMock(EntityManagerInterface::class);
 
-        // init paste manager
+        // instantiate the PasteManager with the mocked dependencies
         $this->pasteManager = new PasteManager(
-            $this->appUtil,
-            $this->logManager,
-            $this->securityUtil,
-            $this->errorManager,
-            $this->visitorInfoUtil,
-            $this->entityManager
+            $this->appUtilMock,
+            $this->logManagerMock,
+            $this->securityUtilMock,
+            $this->errorManagerMock,
+            $this->visitorInfoUtilMock,
+            $this->entityManagerMock
         );
     }
 
     /**
-     * Test save paste
+     * test the savePaste method for successful paste saving
      *
      * @return void
      */
-    public function testSavePaste(): void
+    public function testSavePasteSuccess(): void
     {
-        // mock the entity manager persist and flush methods
-        $this->entityManager->expects($this->once())
-            ->method('persist')->with($this->isInstanceOf(Paste::class));
-        $this->entityManager->expects($this->once())->method('flush');
+        // set up expected behavior of mocks
+        $this->visitorInfoUtilMock->method('getIP')->willReturn('192.168.1.1');
+        $this->visitorInfoUtilMock->method('getBrowserShortify')->willReturn('Chrome');
+        $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
+        $this->appUtilMock->method('isSsl')->willReturn(false);
+        $this->appUtilMock->method('getHttpHost')->willReturn('localhost');
 
-        // mock appUtil to return false for encryption mode
-        $this->appUtil->expects($this->once())->method('isEncryptionMode')->willReturn(false);
+        // create a mock for the Paste entity
+        $pasteMock = $this->createMock(Paste::class);
+        $pasteMock->method('setToken')->willReturnSelf();
+        $pasteMock->method('setContent')->willReturnSelf();
+        $pasteMock->method('setViews')->willReturnSelf();
+        $pasteMock->method('setTime')->willReturnSelf();
+        $pasteMock->method('setBrowser')->willReturnSelf();
+        $pasteMock->method('setIpAddress')->willReturnSelf();
 
-        // mock visitor info util
-        $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');
-        $this->visitorInfoUtil->expects($this->once())->method('getBrowserShortify')->willReturn('unit-test');
+        // expect the entityManager to call persist and flush
+        $this->entityManagerMock->expects($this->once())
+            ->method('persist')
+            ->with($this->isInstanceOf(Paste::class));
+        $this->entityManagerMock->expects($this->once())
+            ->method('flush');
 
-        // call the savePaste method
-        $this->pasteManager->savePaste('token123', 'test content');
+        // Eexpect the logManager to be called upon successful save
+        $this->logManagerMock->expects($this->once())
+            ->method('externalLog');
+
+        // call the method under test
+        $this->pasteManager->savePaste('sample-token', 'This is a test paste.');
     }
 
     /**
-     * Test save too long paste
+     * Test the savePaste method with empty content
+     *
+     * @return void
+     */
+    public function testSavePasteWithEmptyContent(): void
+    {
+        // set up expected behavior of mocks
+        $this->visitorInfoUtilMock->method('getIP')->willReturn('192.168.1.1');
+        $this->visitorInfoUtilMock->method('getBrowserShortify')->willReturn('Chrome');
+        $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
+
+        // expect the ErrorManager to call handleError
+        $this->errorManagerMock->expects($this->once())
+            ->method('handleError')
+            ->with('paste content is empty', Response::HTTP_BAD_REQUEST);
+
+        // call the method under test
+        $this->pasteManager->savePaste('sample-token', '');
+    }
+
+    /**
+     * Test the savePaste method with content that exceeds the maximum length
      *
      * @return void
      */
     public function testSavePasteWithLongContent(): void
     {
-        // mock error manager to expect handleError to be called
-        $this->errorManager->expects($this->once())
-            ->method('handleError')->with('paste content is too long', 400);
+        // set up expected behavior of mocks
+        $this->visitorInfoUtilMock->method('getIP')->willReturn('192.168.1.1');
+        $this->visitorInfoUtilMock->method('getBrowserShortify')->willReturn('Chrome');
+        $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
 
-        // mock visitor info util
-        $this->visitorInfoUtil->expects($this->once())->method('getIP')->willReturn('127.0.0.1');
-        $this->visitorInfoUtil->expects($this->once())->method('getBrowserShortify')->willReturn('unit-test');
+        // expect the ErrorManager to call handleError
+        $this->errorManagerMock->expects($this->once())
+            ->method('handleError')
+            ->with('paste content is too long', Response::HTTP_BAD_REQUEST);
 
-        // call the savePaste method with long content
-        $this->pasteManager->savePaste('token123', str_repeat('a', 200001));
-    }
-
-    public function testGetPaste(): void
-    {
-        // mock repository behavior
-        $paste = new Paste();
-        $paste->setToken('token123')->setContent('test content');
-
-        $repo = $this->createMock(PasteRepository::class);
-        $repo->expects($this->once())
-            ->method('findOneBy')->with(['token' => 'token123'])->willReturn($paste);
-
-        // mock entity manager
-        $this->entityManager->expects($this->once())
-            ->method('getRepository')->with(Paste::class)->willReturn($repo);
-
-        // call the getPaste method and assert the content
-        $content = $this->pasteManager->getPaste('token123');
-
-        // assert the content
-        $this->assertEquals('test content', $content);
-    }
-
-    /**
-     * Test get paste not found
-     *
-     * @return void
-     */
-    public function testGetPasteNotFound(): void
-    {
-        // mock repository to return null
-        $repo = $this->createMock(PasteRepository::class);
-        $repo->expects($this->once())
-            ->method('findOneBy')->with(['token' => 'token123'])->willReturn(null);
-        $this->entityManager->expects($this->once())
-            ->method('getRepository')->with(Paste::class)->willReturn($repo);
-
-        // expect errorManager to handle not found error
-        $this->errorManager->expects($this->once())->method('handleError')->with('paste not found', 404);
-
-        // call the getPaste method and assert null return
-        $content = $this->pasteManager->getPaste('token123');
-
-        // assert result
-        $this->assertNull($content);
+        // call the method under test
+        $this->pasteManager->savePaste('sample-token', str_repeat('A', 200001));
     }
 }

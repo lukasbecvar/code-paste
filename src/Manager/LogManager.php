@@ -3,7 +3,6 @@
 namespace App\Manager;
 
 use App\Util\JsonUtil;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LogManager
@@ -15,20 +14,16 @@ use Symfony\Component\HttpFoundation\Response;
 class LogManager
 {
     private JsonUtil $jsonUtil;
-    private ErrorManager $errorManager;
 
-    public function __construct(JsonUtil $jsonUtil, ErrorManager $errorManager)
+    public function __construct(JsonUtil $jsonUtil)
     {
         $this->jsonUtil = $jsonUtil;
-        $this->errorManager = $errorManager;
     }
 
     /**
      * Send log to external log
      *
      * @param string $message The message of the log
-     *
-     * @throws \App\Exception\AppErrorException Error to send log to external log
      *
      * @return void
      */
@@ -42,16 +37,10 @@ class LogManager
         $externalLogUrl = $_ENV['EXTERNAL_LOG_URL'];
         $externalLogToken = $_ENV['EXTERNAL_LOG_TOKEN'];
 
-        try {
-            $this->jsonUtil->getJson(
-                target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $message) . '&level=4',
-                method: 'POST'
-            );
-        } catch (\Exception $e) {
-            $this->errorManager->handleError(
-                'external-log-error: ' . $e->getMessage(),
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        }
+        // make request to external log storage
+        $this->jsonUtil->getJson(
+            target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $message) . '&level=4',
+            method: 'POST'
+        );
     }
 }

@@ -71,7 +71,7 @@ class PasteControllerTest extends WebTestCase
         ]);
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**

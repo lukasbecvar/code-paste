@@ -41,6 +41,7 @@ class PasteFixtures extends Fixture
         // set paste properties
         $test->setToken('zSc0Uh8L1gsA7a6u')
             ->setContent($content)
+            ->setViews(0)
             ->setTime(new \DateTime())
             ->setBrowser('datafixtures')
             ->setIpAddress('127.0.0.1');
