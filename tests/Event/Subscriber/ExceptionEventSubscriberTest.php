@@ -28,6 +28,7 @@ class ExceptionEventSubscriberTest extends TestCase
     protected function setUp(): void
     {
         // mock dependencies
+        $this->logger = $this->createMock(LoggerInterface::class);
         $this->appUtil = $this->createMock(AppUtil::class);
         $this->appUtil->method('getYamlConfig')->willReturn([
             'monolog' => [
@@ -38,8 +39,6 @@ class ExceptionEventSubscriberTest extends TestCase
                 ]
             ]
         ]);
-
-        $this->logger = $this->createMock(LoggerInterface::class);
 
         // create instance of the ExceptionEventSubscriber
         $this->subscriber = new ExceptionEventSubscriber($this->appUtil, $this->logger);

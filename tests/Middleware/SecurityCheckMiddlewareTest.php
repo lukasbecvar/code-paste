@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class SecurityCheckMiddlewareTest
  *
- * Test cases for SecurityCheckMiddleware class
+ * Test cases for security check middleware
  *
  * @package App\Tests\Middleware
  */

@@ -10,11 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 
 /**
  * Class ErrorController
  *
- * Main controller that shows error pages by error code
+ * Error controller for showing error pages
  *
  * @package App\Controller
  */
@@ -30,7 +31,7 @@ class ErrorController extends AbstractController
     }
 
     /**
-     * Handles errors based on the provided error code
+     * Show error page by code
      *
      * @param Request $request The request object
      *
@@ -52,25 +53,13 @@ class ErrorController extends AbstractController
     }
 
     /**
-     * Handles 404 error page
-     *
-     * @return Response The error page response
-     */
-    #[Route('/error/notfound', methods: ['GET'], name: 'error_404')]
-    public function errorHandle404(): Response
-    {
-        $code = Response::HTTP_NOT_FOUND;
-        return new Response($this->errorManager->getErrorView($code), $code);
-    }
-
-    /**
-     * Show the error page by exception
+     * Show the error page by exception code
      *
      * @param \Throwable $exception The exception object
      *
      * @throws AppErrorException The exception object
      *
-     * @return Response The error view
+     * @return Response The error page view
      */
     public function show(\Throwable $exception): Response
     {
@@ -78,9 +67,11 @@ class ErrorController extends AbstractController
         $statusCode = $exception instanceof HttpException
             ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
 
-        // handle errors in dev mode
+        // handle error with symfony error handler in deb mode
         if ($this->appUtil->isDevMode()) {
-            throw new AppErrorException($statusCode, $exception->getMessage());
+            $errorRenderer = new HtmlErrorRenderer(true);
+            $errorContent = $errorRenderer->render($exception)->getAsString();
+            return new Response($errorContent, $statusCode);
         }
 
         // return error view

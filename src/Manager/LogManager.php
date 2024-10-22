@@ -7,7 +7,7 @@ use App\Util\JsonUtil;
 /**
  * Class LogManager
  *
- * LogManager provides functions for sending log to external log
+ * LogManager provides functions for sending log to external log API
  *
  * @package App\Manager
  */
@@ -21,7 +21,7 @@ class LogManager
     }
 
     /**
-     * Send log to external log
+     * Send log to external log API
      *
      * @param string $message The message of the log
      *
@@ -29,7 +29,7 @@ class LogManager
      */
     public function externalLog(string $message): void
     {
-        if (!($_ENV['EXTERNAL_LOG_ENABLED'] == 'true')) {
+        if (($_ENV['EXTERNAL_LOG_ENABLED'] != 'true')) {
             return;
         }
 
@@ -37,7 +37,7 @@ class LogManager
         $externalLogUrl = $_ENV['EXTERNAL_LOG_URL'];
         $externalLogToken = $_ENV['EXTERNAL_LOG_TOKEN'];
 
-        // make request to external log storage
+        // make request to external log API
         $this->jsonUtil->getJson(
             target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $message) . '&level=4',
             method: 'POST'

@@ -32,7 +32,7 @@ class MaintenanceMiddleware
     }
 
     /**
-     * Handle the maintenance mode check
+     * Check if app is maintenance mode
      *
      * @param RequestEvent $event The request event
      *

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class VisitorInfoUtilTest
  *
- * This class tests the VisitorInfoUtil class
+ * Test cases for visitor info util
  *
  * @package App\Tests\Util
  */
@@ -23,7 +23,7 @@ class VisitorInfoUtilTest extends TestCase
     }
 
     /**
-     * Tests the getIP method when the HTTP_CLIENT_IP server variable is set
+     * Tests get ip when the HTTP_CLIENT_IP server variable is set
      *
      * @return void
      */
@@ -44,7 +44,7 @@ class VisitorInfoUtilTest extends TestCase
     }
 
     /**
-     * Tests the getIP method when the HTTP_X_FORWARDED_FOR server variable is set
+     * Tests get ip when the HTTP_X_FORWARDED_FOR server variable is set
      *
      * @return void
      */
@@ -65,7 +65,7 @@ class VisitorInfoUtilTest extends TestCase
     }
 
     /**
-     * Tests the getIP method when only the REMOTE_ADDR server variable is set
+     * Tests get ip when only the REMOTE_ADDR server variable is set
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class VisitorInfoUtilTest extends TestCase
     }
 
     /**
-     * Tests the GetUserAgent method when the HTTP_USER_AGENT server variable is set
+     * Tests get user agent when the HTTP_USER_AGENT server variable is set
      *
      * @return void
      */
@@ -103,7 +103,7 @@ class VisitorInfoUtilTest extends TestCase
     }
 
     /**
-     * Tests the GetUserAgent method when the HTTP_USER_AGENT server variable is not set
+     * Tests get user agent when the HTTP_USER_AGENT server variable is not set
      *
      * @return void
      */
@@ -117,7 +117,7 @@ class VisitorInfoUtilTest extends TestCase
     }
 
     /**
-     * Test getBrowserShortify method for getting the visitor's browser
+     * Test get browser short name for getting the visitor's browser
      *
      * @return void
      */

@@ -14,10 +14,10 @@ monolog:
             handler: exception
             excluded_http_codes: [400, 404, 405, 426, 503]
 
+# dev log config
 when@dev:
     monolog:
         handlers:
-            # debug dev log handler
             main:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"

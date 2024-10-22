@@ -23,10 +23,8 @@ class JsonUtil
     /**
      * Get JSON data from a file or URL
      *
-     * @param string $target The file path or URL
+     * @param string $target The json target path or URL
      * @param string $method The HTTP method to use
-     *
-     * @throws \App\Exception\AppErrorException Error get json content
      *
      * @return array<mixed>|null The decoded JSON data as an associative array or null on failure
      */
@@ -47,7 +45,7 @@ class JsonUtil
             // get data
             $data = file_get_contents($target, false, $context);
 
-            // return null if data retrieval fails
+            // return null if data not retrieved
             if ($data == null) {
                 return null;
             }
@@ -57,7 +55,7 @@ class JsonUtil
         } catch (\Exception $e) {
             $errorMsg = 'Error retrieving JSON data: ' . $e->getMessage();
 
-            // secure api token
+            // secure api token in error message
             $errorMsg = str_replace($_ENV['EXTERNAL_LOG_TOKEN'], '********', $errorMsg);
 
             // log error

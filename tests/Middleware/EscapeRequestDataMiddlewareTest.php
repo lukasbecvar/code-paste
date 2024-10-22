@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 /**
  * Class EscapeRequestDataMiddlewareTest
  *
- * Test cases for EscapeRequestDataMiddleware class
+ * Test cases for escape request data middleware
  *
  * @package App\Tests\Middleware
  */
@@ -27,7 +27,6 @@ class EscapeRequestDataMiddlewareTest extends TestCase
      */
     public function testEscapeRequestData(): void
     {
-        // arrange
         /** @var SecurityUtil & MockObject $securityUtil */
         $securityUtil = $this->createMock(SecurityUtil::class);
         $securityUtil->method('escapeString')->willReturnCallback(function ($value) {
@@ -56,7 +55,7 @@ class EscapeRequestDataMiddlewareTest extends TestCase
             HttpKernelInterface::MAIN_REQUEST
         );
 
-        // act
+        // call middleware method
         $middleware = new EscapeRequestDataMiddleware($securityUtil);
         $middleware->onKernelRequest($event);
 

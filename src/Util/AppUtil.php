@@ -22,6 +22,18 @@ class AppUtil
     }
 
     /**
+     * Get the environment variable value
+     *
+     * @param string $key The environment variable key
+     *
+     * @return string The environment variable value
+     */
+    public function getEnvValue(string $key): string
+    {
+        return $_ENV[$key];
+    }
+
+    /**
      * Get the HTTP host
      *
      * @return string|null The HTTP host
@@ -31,7 +43,8 @@ class AppUtil
         return $_SERVER['HTTP_HOST'];
     }
 
-    /** Get the application root directory
+    /**
+     * Get the application root directory
      *
      * @return string The application root directory
      */
@@ -48,7 +61,8 @@ class AppUtil
     public function isSsl(): bool
     {
         // check if HTTPS header is set and its value is either 1 or 'on'
-        return isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 1 || strtolower($_SERVER['HTTPS']) === 'on');
+        return isset($_SERVER['HTTPS']) &&
+            ($_SERVER['HTTPS'] == 1 || strtolower($_SERVER['HTTPS']) === 'on');
     }
 
     /**
@@ -58,7 +72,7 @@ class AppUtil
      */
     public function isMaintenance(): bool
     {
-        return $_ENV['MAINTENANCE_MODE'] === 'true';
+        return $this->getEnvValue('MAINTENANCE_MODE') === 'true';
     }
 
     /**
@@ -68,7 +82,7 @@ class AppUtil
      */
     public function isSSLOnly(): bool
     {
-        return $_ENV['SSL_ONLY'] === 'true';
+        return $this->getEnvValue('SSL_ONLY') === 'true';
     }
 
     /**
@@ -78,7 +92,11 @@ class AppUtil
      */
     public function isDevMode(): bool
     {
-        if ($_ENV['APP_ENV'] == 'dev' || $_ENV['APP_ENV'] == 'test') {
+        // get env mode
+        $envMode = $this->getEnvValue('APP_ENV');
+
+        // check mode
+        if ($envMode == 'dev' || $envMode == 'test') {
             return true;
         }
 
@@ -92,7 +110,7 @@ class AppUtil
      */
     public function isEncryptionMode(): bool
     {
-        return $_ENV['ENCRYPTION_MODE'] === 'true';
+        return $this->getEnvValue('ENCRYPTION_MODE') === 'true';
     }
 
     /**
@@ -105,5 +123,68 @@ class AppUtil
     public function getYamlConfig(string $configFile): mixed
     {
         return Yaml::parseFile($this->getAppRootDir() . '/config/' . $configFile);
+    }
+
+    /**
+     * Update the environment variable value
+     *
+     * @param string $key The environment variable key
+     * @param string $value The new environment variable value
+     *
+     * @throws \Exception If the environment value can't be updated
+     */
+    public function updateEnvValue(string $key, string $value): void
+    {
+        // get base .env file
+        $mainEnvFile = $this->getAppRootDir() . '/.env';
+
+        // check if .env file exists
+        if (!file_exists($mainEnvFile)) {
+            throw new \Exception('.env file not found');
+        }
+
+        // load base .env file content
+        $mainEnvContent = file_get_contents($mainEnvFile);
+        if ($mainEnvContent === false) {
+            throw new \Exception('Failed to read .env file');
+        }
+
+        // load current environment name
+        if (preg_match('/^APP_ENV=(\w+)$/m', $mainEnvContent, $matches)) {
+            $env = $matches[1];
+        } else {
+            throw new \Exception('APP_ENV not found in .env file');
+        }
+
+        // get current environment file
+        $envFile = $this->getAppRootDir() . '/.env.' . $env;
+
+        // check if current environment file exists
+        if (!file_exists($envFile)) {
+            throw new \Exception(".env.$env file not found");
+        }
+
+        // get current environment content
+        $envContent = file_get_contents($envFile);
+
+        // check if current environment loaded correctly
+        if ($envContent === false) {
+            throw new \Exception("Failed to read .env.$env file");
+        }
+
+        try {
+            if (preg_match('/^' . $key . '=.*/m', $envContent, $matches)) {
+                $newEnvContent = preg_replace('/^' . $key . '=.*/m', "$key=$value", $envContent);
+
+                // write new content to the environment file
+                if (file_put_contents($envFile, $newEnvContent) === false) {
+                    throw new \Exception('Failed to write to .env ' . $env . ' file');
+                }
+            } else {
+                throw new \Exception($key . ' not found in .env file');
+            }
+        } catch (\Exception $e) {
+            throw new \Exception('Error to update environment variable: ' . $e->getMessage());
+        }
     }
 }

@@ -33,15 +33,15 @@ jobs:
           php-version: 8.3
           extensions: mbstring, intl, pdo_mysql, pdo, zip
 
-      # install dependencies
+      # install php dependencies
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --no-suggest
       
-      # install node-modules
+      # install frontend dependencies
       - name: Install node-modules
         run: npm install --loglevel=error
 
-      # build assets
+      # build frontend assets
       - name: Build assets
         run: npm run build
 

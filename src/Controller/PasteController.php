@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 /**
  * Class PasteController
  *
- * Main controller for code paste functionality
+ * Main controller for code paste save/view functionality
  *
  * @package App\Controller
  */
@@ -36,11 +36,11 @@ class PasteController extends AbstractController
     }
 
     /**
-     * Save paste action
+     * Save paste API endpoint
      *
      * @param Request $request The request object
      *
-     * @return Response The redirect response
+     * @return Response The json status response
      */
     #[Route('/save', methods:['POST'], name: 'app_save_paste')]
     public function save(Request $request): Response
@@ -61,7 +61,7 @@ class PasteController extends AbstractController
     }
 
     /**
-     * View paste action
+     * View paste
      *
      * @param Request $request The request object
      *

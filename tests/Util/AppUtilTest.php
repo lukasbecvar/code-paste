@@ -28,7 +28,18 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test is SSL
+     * Test get environment variable
+     *
+     * @return void
+     */
+    public function testGetEnvValue(): void
+    {
+        $result = $this->appUtil->getEnvValue('APP_ENV');
+        $this->assertEquals($result, $_ENV['APP_ENV']);
+    }
+
+    /**
+     * Test is SSL check
      *
      * @return void
      */
@@ -45,7 +56,7 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test is maintenance
+     * Test check maintenance mode enabled
      *
      * @return void
      */
@@ -59,7 +70,7 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test is SSL only
+     * Test check SSL only enabled
      *
      * @return void
      */
@@ -73,7 +84,7 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test is dev mode
+     * Test check dev mode enabled
      *
      * @return void
      */
@@ -90,7 +101,7 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test is encryption mode
+     * Test check is encryption mode enabled
      *
      * @return void
      */

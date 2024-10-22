@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class DatabaseOnlineMiddleware
  *
- * This middleware is used to check the availability of the database
+ * The middleware for check the availability of the database
  *
  * @package App\Middleware
  */
@@ -32,7 +32,7 @@ class DatabaseOnlineMiddleware
     public function onKernelRequest(): void
     {
         try {
-            // select for connection try
+            // select for try database connection
             $this->doctrineConnection->executeQuery('SELECT 1');
         } catch (\Exception $e) {
             // handle error if database not connected

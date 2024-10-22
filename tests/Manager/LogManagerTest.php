@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Class LogManagerTest
  *
- * Test class for LogManager
+ * Test class for log manager
  *
  * @package App\Tests\Manager
  */

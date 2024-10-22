@@ -19,4 +19,24 @@ class PasteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Paste::class);
     }
+
+    /**
+     * Get the paste object by token
+     *
+     * @param string $token The paste token
+     *
+     * @return Paste|null
+     */
+    public function getPasteByToken(string $token): ?Paste
+    {
+        $query = $this->createQueryBuilder('u')
+            ->where('u.token = :token')
+            ->setParameter('token', $token)
+            ->getQuery();
+
+        /** @var Paste|null $result */
+        $result = $query->getOneOrNullResult();
+
+        return $result;
+    }
 }

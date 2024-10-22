@@ -9,6 +9,7 @@ use App\Manager\LogManager;
 use App\Manager\ErrorManager;
 use App\Util\VisitorInfoUtil;
 use App\Manager\PasteManager;
+use App\Repository\PasteRepository;
 use PHPUnit\Framework\TestCase;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,6 +30,7 @@ class PasteManagerTest extends TestCase
     private SecurityUtil & MockObject $securityUtilMock;
     private ErrorManager & MockObject $errorManagerMock;
     private VisitorInfoUtil & MockObject $visitorInfoUtilMock;
+    private PasteRepository & MockObject $pasteRepositoryMock;
     private EntityManagerInterface & MockObject $entityManagerMock;
 
     protected function setUp(): void
@@ -39,6 +41,7 @@ class PasteManagerTest extends TestCase
         $this->securityUtilMock = $this->createMock(SecurityUtil::class);
         $this->errorManagerMock = $this->createMock(ErrorManager::class);
         $this->visitorInfoUtilMock = $this->createMock(VisitorInfoUtil::class);
+        $this->pasteRepositoryMock = $this->createMock(PasteRepository::class);
         $this->entityManagerMock = $this->createMock(EntityManagerInterface::class);
 
         // instantiate the PasteManager with the mocked dependencies
@@ -48,12 +51,13 @@ class PasteManagerTest extends TestCase
             $this->securityUtilMock,
             $this->errorManagerMock,
             $this->visitorInfoUtilMock,
+            $this->pasteRepositoryMock,
             $this->entityManagerMock
         );
     }
 
     /**
-     * test the savePaste method for successful paste saving
+     * test successful paste saving
      *
      * @return void
      */
@@ -91,7 +95,7 @@ class PasteManagerTest extends TestCase
     }
 
     /**
-     * Test the savePaste method with empty content
+     * Test save paste with empty content
      *
      * @return void
      */
@@ -112,7 +116,7 @@ class PasteManagerTest extends TestCase
     }
 
     /**
-     * Test the savePaste method with content that exceeds the maximum length
+     * Test save paste with content length reached maximum limit
      *
      * @return void
      */

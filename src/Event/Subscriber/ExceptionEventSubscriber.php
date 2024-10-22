@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * Class ExceptionEventSubscriber
  *
- * Subscriber to handle error exceptions
+ * Subscriber for process error exceptions
  *
  * @package App\EventSubscriber
  */
@@ -71,7 +71,7 @@ class ExceptionEventSubscriber implements EventSubscriberInterface
 
         // check if code is excluded from logging
         if (!in_array($statusCode, $excludedHttpCodes)) {
-            // log the error message to exception log
+            // log error message to the exception log
             $this->logger->error($message);
         }
     }

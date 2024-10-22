@@ -12,7 +12,7 @@ namespace App\Util;
 class SecurityUtil
 {
     /**
-     * Escape special characters in a string to prevent HTML injection
+     * Escape special characters in a string to prevent XSS attacks
      *
      * @param string $string The input string to escape
      *

@@ -12,9 +12,9 @@ namespace App\Util;
 class VisitorInfoUtil
 {
     /**
-     * Get the client's IP address
+     * Get the client IP address
      *
-     * @return string|null The client's IP address
+     * @return string|null The client IP address
      */
     public function getIP(): ?string
     {
@@ -28,12 +28,12 @@ class VisitorInfoUtil
             return $_SERVER['HTTP_X_FORWARDED_FOR'];
         }
 
-        // default addr get
+        // default remote addr get
         return $_SERVER['REMOTE_ADDR'];
     }
 
     /**
-     * Get the user agent
+     * Get the browser user agent
      *
      * @return string|null The user agent
      */
@@ -109,7 +109,7 @@ class VisitorInfoUtil
                 break;
             default:
                 // if not found, check user agent length
-                if (str_contains($userAgent, ' ') || strlen($userAgent) >= 39) {
+                if (str_contains($userAgent, ' ') || strlen($userAgent) >= 60) {
                     $output = 'Unknown';
                 } else {
                     $output = $userAgent;

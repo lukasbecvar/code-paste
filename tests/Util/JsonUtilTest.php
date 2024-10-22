@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Class JsonUtilTest
  *
- * Test cases for JsonUtil class
+ * Test cases for json utils
  *
  * @package Tests\Unit\Util
  */
@@ -29,7 +29,7 @@ class JsonUtilTest extends TestCase
     }
 
     /**
-     * Test getJson method with different targets
+     * Test get json data form file
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class JsonUtilTest extends TestCase
     }
 
     /**
-     * Test getJson method with different targets
+     * Test get json data with invalid target
      *
      * @return void
      */
@@ -65,11 +65,11 @@ class JsonUtilTest extends TestCase
     }
 
     /**
-     * Test getJson method with different targets
+     * Test get json with invalid data returned from the target
      *
      * @return void
      */
-    public function testGetJsonWithInvalidData(): void
+    public function testGetJsonWithInvalidDataReturned(): void
     {
         // test with invalid JSON data
         $invalidJson = '{"key": "value"';

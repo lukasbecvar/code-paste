@@ -6,6 +6,7 @@ use App\Entity\Paste;
 use App\Util\AppUtil;
 use App\Util\SecurityUtil;
 use App\Util\VisitorInfoUtil;
+use App\Repository\PasteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,6 +24,7 @@ class PasteManager
     private SecurityUtil $securityUtil;
     private ErrorManager $errorManager;
     private VisitorInfoUtil $visitorInfoUtil;
+    private PasteRepository $pasteRepository;
     private EntityManagerInterface $entityManager;
 
     public function __construct(
@@ -31,6 +33,7 @@ class PasteManager
         SecurityUtil $securityUtil,
         ErrorManager $errorManager,
         VisitorInfoUtil $visitorInfoUtil,
+        PasteRepository $pasteRepository,
         EntityManagerInterface $entityManager
     ) {
         $this->appUtil = $appUtil;
@@ -38,11 +41,12 @@ class PasteManager
         $this->securityUtil = $securityUtil;
         $this->errorManager = $errorManager;
         $this->entityManager = $entityManager;
+        $this->pasteRepository = $pasteRepository;
         $this->visitorInfoUtil = $visitorInfoUtil;
     }
 
     /**
-     * Saves a paste to database
+     * Save new paste to the database
      *
      * @param string $token The paste token
      * @param string $content The paste content
@@ -61,7 +65,6 @@ class PasteManager
                 'error getting visitor IP address',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
-            return;
         }
 
         // check if browser is null
@@ -70,7 +73,6 @@ class PasteManager
                 'error getting visitor browser info',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
-            return;
         }
 
         // check if content is not empty
@@ -134,7 +136,7 @@ class PasteManager
     public function getPaste(string $token): ?string
     {
         // get paste from database
-        $paste = $this->entityManager->getRepository(Paste::class)->findOneBy(['token' => $token]);
+        $paste = $this->pasteRepository->getPasteByToken($token);
 
         // check if paste exists
         if (!$paste) {
@@ -142,7 +144,6 @@ class PasteManager
                 'paste not found',
                 Response::HTTP_NOT_FOUND
             );
-            return null;
         }
 
         // get paste content
@@ -155,7 +156,6 @@ class PasteManager
                 'paste content is empty',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
-            return null;
         }
 
         // increase paste views
@@ -171,16 +171,16 @@ class PasteManager
     }
 
     /**
-     * Increase paste views
+     * Increase paste views counter
      *
-     * @param int $id
+     * @param int $id The id of the paste row
      *
      * @return void
      */
     public function increastePasteViews(int $id): void
     {
         // get paste from database
-        $paste = $this->entityManager->getRepository(Paste::class)->findOneBy(['id' => $id]);
+        $paste = $this->entityManager->getRepository(Paste::class)->find($id);
 
         // check if paste exists
         if (!$paste) {
@@ -188,7 +188,6 @@ class PasteManager
                 'paste not found',
                 Response::HTTP_NOT_FOUND
             );
-            return;
         }
 
         // get paste views

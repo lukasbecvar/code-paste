@@ -22,23 +22,22 @@ class ErrorManager
     }
 
     /**
-     * Handles errors based on the application's mode
+     * Handle error exception
      *
      * @param string $msg The error message
      * @param int $code The error code
      *
-     * @throws HttpException
+     * @throws HttpException The error exception
      *
-     * @return mixed
+     * @return never
      */
-    public function handleError(string $msg, int $code): mixed
+    public function handleError(string $msg, int $code): void
     {
-        // throw HttpException with JSON response
         throw new HttpException($code, $msg, null, [], $code);
     }
 
     /**
-     * Renders an error view based on the error code
+     * Render error view by http error code
      *
      * @param string|int $code The error code
      *

@@ -7,12 +7,12 @@ WORKDIR /var/www
 # copy project files to container
 # COPY . /var/www/
 
-# update packages and install necessary dependencies
+# update packages and install dependencies
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     rpm
     
-# install necessary PHP extensions
+# install PHP extensions
 RUN docker-php-ext-install pdo_mysql pdo intl
 
 # install OPCache

@@ -7,11 +7,12 @@ use Symfony\Component\String\ByteString;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class PasteControllerTest
  *
- * Test cases for PasteController class
+ * Test cases for PasteController routes
  *
  * @package App\Tests\Controller
  */
@@ -47,14 +48,14 @@ class PasteControllerTest extends WebTestCase
      */
     public function testSaveEmptyPaste(): void
     {
-        // expect error exception
-        $this->expectException(AppErrorException::class);
-
         // make request
         $this->client->request('POST', '/save', [
             'paste-content' => '',
             'token' => ByteString::fromRandom(16),
         ]);
+
+        // assert response
+        $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     /**

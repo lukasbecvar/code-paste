@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class DatabaseOnlineMiddlewareTest
  *
- * Test cases for DatabaseOnlineMiddleware class
+ * Test cases for database online check middleware
  *
  * @package App\Tests\Middleware
  */

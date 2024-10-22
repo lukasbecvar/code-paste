@@ -1,2 +1,3 @@
 twig:
+    # twig templates directory path
     default_path: '%kernel.project_dir%/view'

@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 /**
  * Class EscapeRequestDataMiddleware
  *
- * Middleware to escape request data for security issues
+ * Middleware to escape request data for insecure validation
  *
  * @package App\Service\Middleware
  */

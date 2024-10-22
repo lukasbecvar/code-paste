@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class SecurityCheckMiddleware
  *
- * This middleware checks if the connection is secure
+ * The middleware for check if the connection is secure
  *
  * @package App\Middleware
  */
