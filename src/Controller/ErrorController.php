@@ -57,8 +57,6 @@ class ErrorController extends AbstractController
      *
      * @param \Throwable $exception The exception object
      *
-     * @throws AppErrorException The exception object
-     *
      * @return Response The error page view
      */
     public function show(\Throwable $exception): Response
