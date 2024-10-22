@@ -50,6 +50,8 @@ class PasteManager
      *
      * @param string $token The paste token
      * @param string $content The paste content
+     * 
+     * @throws Symfony\Component\HttpKernel\Exception\HttpException If the paste save failed
      *
      * @return void
      */
@@ -130,6 +132,8 @@ class PasteManager
      * Gets a paste from database
      *
      * @param string $token The paste token
+     * 
+     * @throws Symfony\Component\HttpKernel\Exception\HttpException If the paste view failed
      *
      * @return string|null The paste content
      */
@@ -174,6 +178,8 @@ class PasteManager
      * Increase paste views counter
      *
      * @param int $id The id of the paste row
+     * 
+     * @throws Symfony\Component\HttpKernel\Exception\HttpException If the counter update failed
      *
      * @return void
      */
