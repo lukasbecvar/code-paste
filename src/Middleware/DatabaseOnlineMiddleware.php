@@ -27,8 +27,8 @@ class DatabaseOnlineMiddleware
     /**
      * Check if database is online
      *
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException if the database is offline
-     * 
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException if the database is offline
+     *
      * @return void
      */
     public function onKernelRequest(): void
