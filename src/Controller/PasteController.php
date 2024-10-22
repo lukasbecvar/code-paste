@@ -25,7 +25,7 @@ class PasteController extends AbstractController
     }
 
     /**
-     * Index action
+     * Index action (show save paste form view)
      *
      * @return Response The save paste form response
      */
@@ -36,7 +36,7 @@ class PasteController extends AbstractController
     }
 
     /**
-     * Save paste API endpoint
+     * Save paste to database
      *
      * @param Request $request The request object
      *
@@ -61,7 +61,7 @@ class PasteController extends AbstractController
     }
 
     /**
-     * View paste
+     * View paste paste by token from database
      *
      * @param Request $request The request object
      *
