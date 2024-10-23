@@ -42,8 +42,6 @@ class ErrorManager
      *
      * @param string|int $code The error code
      *
-     * @throws Exception If the error view can't be rendered
-     *
      * @return string The rendered error view
      */
     public function getErrorView(string|int $code): string
