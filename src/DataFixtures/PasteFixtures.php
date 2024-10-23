@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use DateTime;
 use App\Entity\Paste;
 use App\Util\AppUtil;
 use App\Util\SecurityUtil;
@@ -42,7 +43,7 @@ class PasteFixtures extends Fixture
         $test->setToken('zSc0Uh8L1gsA7a6u')
             ->setContent($content)
             ->setViews(0)
-            ->setTime(new \DateTime())
+            ->setTime(new DateTime())
             ->setBrowser('datafixtures')
             ->setIpAddress('127.0.0.1');
 

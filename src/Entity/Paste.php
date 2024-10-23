@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PasteRepository;
@@ -34,7 +35,7 @@ class Paste
     private ?int $views = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $time = null;
+    private ?DateTimeInterface $time = null;
 
     #[ORM\Column(length: 255)]
     private ?string $browser = null;
@@ -127,9 +128,9 @@ class Paste
     /**
      * Get the paste creation time
      *
-     * @return \DateTimeInterface|null The paste creation time
+     * @return DateTimeInterface|null The paste creation time
      */
-    public function getTime(): ?\DateTimeInterface
+    public function getTime(): ?DateTimeInterface
     {
         return $this->time;
     }
@@ -137,11 +138,11 @@ class Paste
     /**
      * Set the paste creation time
      *
-     * @param \DateTimeInterface $time The paste creation time
+     * @param DateTimeInterface $time The paste creation time
      *
      * @return static The paste object
      */
-    public function setTime(\DateTimeInterface $time): static
+    public function setTime(DateTimeInterface $time): static
     {
         $this->time = $time;
 

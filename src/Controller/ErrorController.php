@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use Throwable;
 use App\Util\AppUtil;
 use App\Manager\ErrorManager;
-use App\Exception\AppErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,11 +55,11 @@ class ErrorController extends AbstractController
     /**
      * Show the error page by exception code
      *
-     * @param \Throwable $exception The exception object
+     * @param Throwable $exception The exception object
      *
      * @return Response The error page view
      */
-    public function show(\Throwable $exception): Response
+    public function show(Throwable $exception): Response
     {
         // get exception code
         $statusCode = $exception instanceof HttpException

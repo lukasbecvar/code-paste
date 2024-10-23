@@ -6,7 +6,7 @@ Self-hosted text/code paste service with syntax highlighting and paste content e
 
 ## Features
 - Share text and code snippets
-- Encryption of paste content
+- Paste content encryption
 - SSL only mode
 - Maintenance mode
 - Syntax highlighting

@@ -2,6 +2,7 @@
 
 namespace App\Util;
 
+use Exception;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -52,7 +53,7 @@ class JsonUtil
 
             // decode & return array
             return (array) json_decode($data, true);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $errorMsg = 'Error retrieving JSON data: ' . $e->getMessage();
 
             // secure api token in error message

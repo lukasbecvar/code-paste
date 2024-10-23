@@ -2,6 +2,7 @@
 
 namespace App\Middleware;
 
+use Exception;
 use App\Manager\ErrorManager;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,7 @@ class DatabaseOnlineMiddleware
         try {
             // select for try database connection
             $this->doctrineConnection->executeQuery('SELECT 1');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // handle error if database not connected
             $this->errorManager->handleError(
                 'database connection error: ' . $e->getMessage(),

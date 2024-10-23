@@ -2,12 +2,10 @@
 
 namespace App\Tests\Controller;
 
-use App\Exception\AppErrorException;
 use Symfony\Component\String\ByteString;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class PasteControllerTest

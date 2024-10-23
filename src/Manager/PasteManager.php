@@ -2,6 +2,8 @@
 
 namespace App\Manager;
 
+use DateTime;
+use Exception;
 use App\Entity\Paste;
 use App\Util\AppUtil;
 use App\Util\SecurityUtil;
@@ -105,7 +107,7 @@ class PasteManager
         $paste->setToken($token)
             ->setContent($content)
             ->setViews(0)
-            ->setTime(new \DateTime())
+            ->setTime(new DateTime())
             ->setBrowser($browser)
             ->setIpAddress($ipAddress);
 
@@ -113,7 +115,7 @@ class PasteManager
         try {
             $this->entityManager->persist($paste);
             $this->entityManager->flush();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // handle error
             $this->errorManager->handleError(
                 'error saving paste: ' . $e->getMessage(),
@@ -206,7 +208,7 @@ class PasteManager
         try {
             $this->entityManager->persist($paste);
             $this->entityManager->flush();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // handle exception
             $this->errorManager->handleError(
                 'error to increase paste views: ' . $e->getMessage(),
