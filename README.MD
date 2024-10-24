@@ -22,7 +22,7 @@ Self-hosted text/code paste service with syntax highlighting and paste content e
 2. Install dependencies ``npm install && composer install``
 3. Build assets ``npm run build``
 4. Create database ``php bin/console doctrine:database:create --if-not-exists``
-5. Create migrations ``php bin/console doctrine:migrations:migrate --no-interaction``
+5. Migrate database ``php bin/console doctrine:migrations:migrate --no-interaction``
 6. Configure website host [apache-site.conf](./docker/configs/apache-site.conf)
 
 ## Configuration
