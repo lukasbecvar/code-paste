@@ -9,7 +9,7 @@ services:
     # composer service for managing php dependencies
     composer:
         image: composer:latest
-        container_name: composer
+        container_name: code_paste_composer
         working_dir: /app
         volumes:
             - .:/app
@@ -20,7 +20,7 @@ services:
     # node service for building assets
     node:
         image: node:latest
-        container_name: node
+        container_name: code_paste_node
         working_dir: /app
         volumes:
             - .:/app
@@ -50,7 +50,7 @@ services:
         build:
             context: .
             dockerfile: ./.docker/Dockerfile
-        container_name: code_paste_apache
+        container_name: code_paste_webserver
         restart: always
         depends_on:
             - mysql
