@@ -1,5 +1,5 @@
 # use basic apache with php_mod image
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 # set default apache working directory
 WORKDIR /var/www

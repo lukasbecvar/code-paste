@@ -35,8 +35,8 @@ Self-hosted text/code paste service with syntax highlighting and paste content e
 ## Requirements
 - Apache or Nginx web server with PHP support
 - NodeJS 18 or higher
-- PHP 8.3 or higher
 - Composer
+- PHP 8.4
 - MySQL
 
 ## License
