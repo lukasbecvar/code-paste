@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Manager\PasteManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +26,9 @@ class PasteController extends AbstractController
     }
 
     /**
-     * Index action (show save paste form view)
+     * Index action (show save paste view)
      *
-     * @return Response The save paste form response
+     * @return Response The save paste page response
      */
     #[Route('/', name: 'app_index')]
     public function index(): Response
@@ -36,7 +37,7 @@ class PasteController extends AbstractController
     }
 
     /**
-     * Save paste to database
+     * Save paste to database (API endpoint)
      *
      * @param Request $request The request object
      *
@@ -49,15 +50,23 @@ class PasteController extends AbstractController
         $content = (string) $request->request->get('paste-content');
         $token = (string) $request->request->get('token');
 
-        // save paste
-        $this->pasteManager->savePaste($token, $content);
+        try {
+            // save paste
+            $this->pasteManager->savePaste($token, $content);
 
-        // return success response
-        return $this->json([
-            'code' => Response::HTTP_OK,
-            'status' => 'success',
-            'message' => 'Paste saved successfully',
-        ], Response::HTTP_OK);
+            // return success response
+            return $this->json([
+                'code' => Response::HTTP_OK,
+                'status' => 'success',
+                'message' => 'Paste saved successfully',
+            ], Response::HTTP_OK);
+        } catch (Exception $e) {
+            return $this->json([
+                'code' => Response::HTTP_BAD_REQUEST,
+                'status' => 'error',
+                'message' => 'Error to save paste: ' . $e->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -70,7 +79,7 @@ class PasteController extends AbstractController
     #[Route('/view', name: 'app_view_paste')]
     public function view(Request $request): Response
     {
-        // get paste file from request parameter
+        // get paste file from query string
         $pasteFile = (string) $request->request->get('f');
 
         // get paste content

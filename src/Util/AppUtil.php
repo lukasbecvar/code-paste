@@ -23,7 +23,7 @@ class AppUtil
     }
 
     /**
-     * Get the environment variable value
+     * Get environment variable value
      *
      * @param string $key The environment variable key
      *
@@ -35,7 +35,7 @@ class AppUtil
     }
 
     /**
-     * Get the HTTP host
+     * Get HTTP host
      *
      * @return string|null The HTTP host
      */
@@ -45,7 +45,7 @@ class AppUtil
     }
 
     /**
-     * Get the application root directory
+     * Get application root directory
      *
      * @return string The application root directory
      */
@@ -55,7 +55,7 @@ class AppUtil
     }
 
     /**
-     * Check if the connection is secure (SSL)
+     * Check if connection is secure (SSL)
      *
      * @return bool Whether the connection is secure
      */
@@ -77,7 +77,7 @@ class AppUtil
     }
 
     /**
-     * Check if the ssl only mode
+     * Check if ssl only mode is enabled
      *
      * @return bool Whether the application is under ssl only mode
      */

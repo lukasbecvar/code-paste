@@ -21,7 +21,7 @@ class PasteRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get the paste object by token
+     * Get paste object by token
      *
      * @param string $token The paste token
      *

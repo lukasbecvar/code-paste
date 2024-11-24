@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 /**
  * Class EscapeRequestDataMiddleware
  *
- * Middleware to escape request data for insecure validation
+ * Middleware for escape request data (for SQL injection/XSS attacks protection)
  *
  * @package App\Service\Middleware
  */
@@ -32,10 +32,10 @@ class EscapeRequestDataMiddleware
     {
         $request = $event->getRequest();
 
-        // get form data for all request methods
+        // get data from request
         $formData = $request->query->all() + $request->request->all();
 
-        // escape all inputs
+        // escape request data
         array_walk_recursive($formData, function (&$value) {
             $value = $this->securityUtil->escapeString($value);
         });

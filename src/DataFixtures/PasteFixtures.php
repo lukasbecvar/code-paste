@@ -12,7 +12,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 /**
  * Class PasteFixtures
  *
- * Fixtures for paste entity
+ * Testing data fixture for paste entity
  *
  * @package App\DataFixtures
  */
@@ -27,10 +27,15 @@ class PasteFixtures extends Fixture
         $this->securityUtil = $securityUtil;
     }
 
+    /**
+     * Load testing data
+     *
+     * @param ObjectManager $manager The object manager
+     *
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
-        $test = new Paste();
-
         // testing paste content
         $content = 'this is a test paste';
 
@@ -39,7 +44,8 @@ class PasteFixtures extends Fixture
             $content = $this->securityUtil->encryptAes($content);
         }
 
-        // set paste properties
+        // init paste entity
+        $test = new Paste();
         $test->setToken('zSc0Uh8L1gsA7a6u')
             ->setContent($content)
             ->setViews(0)

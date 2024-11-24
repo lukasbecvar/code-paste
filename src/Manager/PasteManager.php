@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class PasteManager
  *
- * PasteManager provides paste operations
+ * Manager for paste save/get functionality
  *
  * @package App\Manager
  */
@@ -48,7 +48,7 @@ class PasteManager
     }
 
     /**
-     * Save new paste to the database
+     * Save new paste to database
      *
      * @param string $token The paste token
      * @param string $content The paste content
@@ -63,7 +63,7 @@ class PasteManager
         $ipAddress = $this->visitorInfoUtil->getIP();
         $browser = $this->visitorInfoUtil->getBrowserShortify();
 
-        // check if IP address is null
+        // check if visitor ip address is null
         if ($ipAddress == null) {
             $this->errorManager->handleError(
                 'error getting visitor IP address',
@@ -71,7 +71,7 @@ class PasteManager
             );
         }
 
-        // check if browser is null
+        // check if visitor browser is null
         if ($browser == null) {
             $this->errorManager->handleError(
                 'error getting visitor browser info',
@@ -79,7 +79,7 @@ class PasteManager
             );
         }
 
-        // check if content is not empty
+        // check if paste content is not empty
         if ($content == null || $content == '') {
             $this->errorManager->handleError(
                 'paste content is empty',
@@ -87,7 +87,7 @@ class PasteManager
             );
         }
 
-        // check max content length
+        // check max content length reached
         if (strlen($content) > 200000) {
             $this->errorManager->handleError(
                 'paste content is too long',
@@ -102,8 +102,6 @@ class PasteManager
 
         // create new paste entity
         $paste = new Paste();
-
-        // set paste properties
         $paste->setToken($token)
             ->setContent($content)
             ->setViews(0)
@@ -111,12 +109,11 @@ class PasteManager
             ->setBrowser($browser)
             ->setIpAddress($ipAddress);
 
-        // save paste to database
         try {
+            // save paste to database
             $this->entityManager->persist($paste);
             $this->entityManager->flush();
         } catch (Exception $e) {
-            // handle error
             $this->errorManager->handleError(
                 'error saving paste: ' . $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
@@ -126,16 +123,16 @@ class PasteManager
         // get connection protocol
         $protocol = $this->appUtil->isSsl() ? 'https' : 'http';
 
-        // log new paste save
+        // log new paste save to external log
         $this->logManager->externalLog('new paste saved: ' . $protocol . '://' . $this->appUtil->getHttpHost() . '/view?f=' . $token);
     }
 
     /**
-     * Gets a paste from database
+     * Gets paste from database
      *
      * @param string $token The paste token
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\HttpException If the paste view failed
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException If the paste get failed
      *
      * @return string|null The paste content
      */
@@ -198,18 +195,17 @@ class PasteManager
             );
         }
 
-        // get paste views
+        // get current paste views
         $views = $paste->getViews();
 
         // increate paste views
         $paste->setViews($views + 1);
 
-        // save paste to database
         try {
+            // save updated paste views to database
             $this->entityManager->persist($paste);
             $this->entityManager->flush();
         } catch (Exception $e) {
-            // handle exception
             $this->errorManager->handleError(
                 'error to increase paste views: ' . $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR

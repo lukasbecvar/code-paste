@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Class JsonUtil
  *
- * JsonUtil provides functions for retrieving JSON data from a file or URL
+ * JsonUtil provides functions for get JSON data from a file or URL
  *
  * @package App\Util
  */

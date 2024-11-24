@@ -2,21 +2,24 @@
 
 namespace App\Manager;
 
+use App\Util\AppUtil;
 use App\Util\JsonUtil;
 
 /**
  * Class LogManager
  *
- * LogManager provides functions for sending log to external log API
+ * Manager for sending log to external log API (admin-suite)
  *
  * @package App\Manager
  */
 class LogManager
 {
+    private AppUtil $appUtil;
     private JsonUtil $jsonUtil;
 
-    public function __construct(JsonUtil $jsonUtil)
+    public function __construct(AppUtil $appUtil, JsonUtil $jsonUtil)
     {
+        $this->appUtil = $appUtil;
         $this->jsonUtil = $jsonUtil;
     }
 
@@ -29,7 +32,8 @@ class LogManager
      */
     public function externalLog(string $message): void
     {
-        if (($_ENV['EXTERNAL_LOG_ENABLED'] != 'true')) {
+        // check if external log is enabled
+        if ($this->appUtil->getEnvValue('EXTERNAL_LOG_ENABLED') != 'true') {
             return;
         }
 
@@ -37,7 +41,7 @@ class LogManager
         $externalLogUrl = $_ENV['EXTERNAL_LOG_URL'];
         $externalLogToken = $_ENV['EXTERNAL_LOG_TOKEN'];
 
-        // make request to external log API
+        // request to external log API
         $this->jsonUtil->getJson(
             target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $message) . '&level=4',
             method: 'POST'

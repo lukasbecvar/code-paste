@@ -15,7 +15,7 @@ use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 /**
  * Class ErrorController
  *
- * Error controller for showing error pages
+ * Controller for error rendering error pages
  *
  * @package App\Controller
  */
@@ -43,7 +43,7 @@ class ErrorController extends AbstractController
         // get error code
         $code = $request->query->get('code');
 
-        // block handeling (maintenance, banned use only from app logic)
+        // block handeling (maintenance can be handled by maintenance middleware)
         if ($code == 'maintenance' or $code == null) {
             $code = 'unknown';
         }
@@ -53,7 +53,7 @@ class ErrorController extends AbstractController
     }
 
     /**
-     * Show the error page by exception code
+     * Show error page by exception code
      *
      * @param Throwable $exception The exception object
      *

@@ -5,16 +5,16 @@ namespace App\Util;
 /**
  * Class VisitorInfoUtil
  *
- * VisitorInfoUtil provides methods to get information about visitors
+ * VisitorInfoUtil provides methods to get information about visitor
  *
  * @package App\Util
  */
 class VisitorInfoUtil
 {
     /**
-     * Get the client IP address
+     * Get current visitor ip address
      *
-     * @return string|null The client IP address
+     * @return string|null The visitor ip address
      */
     public function getIP(): ?string
     {
@@ -33,7 +33,7 @@ class VisitorInfoUtil
     }
 
     /**
-     * Get the browser user agent
+     * Get current visitor browser user agent
      *
      * @return string|null The user agent
      */
@@ -52,7 +52,7 @@ class VisitorInfoUtil
     }
 
     /**
-     * Get a short version of the browser name
+     * Get short browser name
      *
      * @param string|null $userAgent The user agent string
      *

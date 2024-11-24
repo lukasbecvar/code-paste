@@ -2,6 +2,7 @@
 
 namespace App\Tests\Manager;
 
+use App\Util\AppUtil;
 use App\Util\JsonUtil;
 use App\Manager\LogManager;
 use PHPUnit\Framework\TestCase;
@@ -17,15 +18,17 @@ use PHPUnit\Framework\MockObject\MockObject;
 class LogManagerTest extends TestCase
 {
     private LogManager $logManager;
+    private AppUtil & MockObject $appUtilMock;
     private JsonUtil & MockObject $jsonUtilMock;
 
     protected function setUp(): void
     {
         // create mocks for dependencies
+        $this->appUtilMock = $this->createMock(AppUtil::class);
         $this->jsonUtilMock = $this->createMock(JsonUtil::class);
 
         // initialize LogManager with mocked dependencies
-        $this->logManager = new LogManager($this->jsonUtilMock);
+        $this->logManager = new LogManager($this->appUtilMock, $this->jsonUtilMock);
 
         // set environment variables
         $_ENV['EXTERNAL_LOG_ENABLED'] = 'true';
@@ -40,6 +43,9 @@ class LogManagerTest extends TestCase
      */
     public function testExternalLogSuccess(): void
     {
+        // simulate external logging is enabled
+        $this->appUtilMock->method('getEnvValue')->willReturn('true');
+
         $message = 'Test log message';
         $expectedUrl = 'https://external-log-service.com/log?token=test-token&name='
             . urlencode('code-paste: log') . '&message='
@@ -59,8 +65,8 @@ class LogManagerTest extends TestCase
      */
     public function testExternalLogDisabled(): void
     {
-        // disable external logging
-        $_ENV['EXTERNAL_LOG_ENABLED'] = 'false';
+        // simulate external logging is disabled
+        $this->appUtilMock->method('getEnvValue')->willReturn('false');
 
         // ensure getJson is never called when logging is disabled
         $this->jsonUtilMock->expects($this->never())->method('getJson');

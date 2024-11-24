@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class SecurityCheckMiddleware
  *
- * The middleware for check if the connection is secure
+ * Middleware for security rules check
  *
  * @package App\Middleware
  */
@@ -25,13 +25,13 @@ class SecurityCheckMiddleware
     }
 
     /**
-     * Check if the connection is secure
+     * Check if connection is secure
      *
      * @return void
      */
     public function onKernelRequest(): void
     {
-        // check if SSL check enabled
+        // check if ssl only mode is enabled
         if ($this->appUtil->isSSLOnly() && !$this->appUtil->isSsl()) {
             $this->errorManager->handleError(
                 'SSL error: connection not running on ssl protocol',

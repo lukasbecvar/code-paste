@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class DatabaseOnlineMiddleware
  *
- * The middleware for check the availability of the database
+ * Middleware for check the database availability
  *
  * @package App\Middleware
  */
@@ -38,7 +38,6 @@ class DatabaseOnlineMiddleware
             // select for try database connection
             $this->doctrineConnection->executeQuery('SELECT 1');
         } catch (Exception $e) {
-            // handle error if database not connected
             $this->errorManager->handleError(
                 'database connection error: ' . $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
