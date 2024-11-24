@@ -10,21 +10,21 @@ body {
 .error-page-msg {
     position: absolute;
     color: white;
+    top: 35%;
+    left: 50%;
+    width: 95%;
     opacity: 0.9;
     font-size: 28px;
-    left: 50%;
-    top: 35%;
-    width: 95%;
+    user-select: none;
+    font-weight: bold;
     text-align: center;
     transform: translate(-50%, -50%);
     font-family: 'Maven Pro', sans-serif;
-    user-select: none;
-    font-weight: bold;
 }
 
 @media screen and (max-width: 800px) { 
     .error-page-msg {
-        font-size: 18px;
         width: 80%;
+        font-size: 18px;
     }
 }

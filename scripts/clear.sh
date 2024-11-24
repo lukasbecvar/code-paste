@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# delete composer files
-sudo rm -rf composer.lock
+# delete backend dependencies
 sudo rm -rf vendor/
+sudo rm -rf composer.lock
 
-# delete npm packages
+# delete frontend dependencies
 sudo rm -rf package-lock.json
 sudo rm -rf node_modules/
 
-# delete builded assets
+# delete frontend builded assets
 sudo rm -rf public/bundles/
 sudo rm -rf public/assets/
 
-# delete symfony cache folder
+# delete symfony cache
 sudo rm -rf var/
 
 # delete docker services data

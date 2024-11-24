@@ -1,4 +1,4 @@
-/* scrollbar style */
+/* custom scrollbar */ 
 ::-webkit-scrollbar {
 	width: 12px;
 	height: 12px;
@@ -9,9 +9,9 @@
 }
  
 ::-webkit-scrollbar-thumb {
+	transition: all 0.2s ease;
 	background-color: #404d68;
 	-webkit-transition: all 0.2s ease;
-	transition: all 0.2s ease;
 } 
 
 ::-webkit-scrollbar-thumb:hover {

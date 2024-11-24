@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Class Version20240909120827
  * 
- * The default database schema
+ * The default database structure
  * 
  * @package DoctrineMigrations
  */
@@ -27,7 +27,7 @@ final class Version20240909120827 extends AbstractMigration
     }
 
     /**
-     * Execute the migration
+     * Execute migration
      *
      * @param Schema $schema
      * 
@@ -39,7 +39,7 @@ final class Version20240909120827 extends AbstractMigration
     }
 
     /**
-     * Undo the migration
+     * Undo migration
      *
      * @param Schema $schema
      * 

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# install composer packages
+# install composer dependencies
 if [ ! -d 'vendor/' ]
 then
     docker-compose run composer
 fi
 
-# install node-modules frontend packages
+# install frontend dependencies
 if [ ! -d 'node_modules/' ]
 then
     docker-compose run node npm install --loglevel=error

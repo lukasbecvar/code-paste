@@ -1,13 +1,13 @@
-# use basic apache with php_mod image
+# define base php-apache image
 FROM php:8.4-apache
 
-# set default apache working directory
+# set container working directory
 WORKDIR /var/www
 
 # copy project files to container
 # COPY . /var/www/
 
-# update packages and install dependencies
+# install required packages
 RUN apt-get update && apt-get install -y \
     libicu-dev \
     rpm
@@ -15,5 +15,5 @@ RUN apt-get update && apt-get install -y \
 # install PHP extensions
 RUN docker-php-ext-install pdo_mysql pdo intl
 
-# install OPCache
+# install OPCache extension
 RUN docker-php-ext-install opcache

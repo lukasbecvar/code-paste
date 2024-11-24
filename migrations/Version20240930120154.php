@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Class Version20240930120154
  * 
- * The migration for add index to pastes table
+ * Migration for add index to pastes table
  * 
  * @package DoctrineMigrations
  */
@@ -27,7 +27,7 @@ final class Version20240930120154 extends AbstractMigration
     }
 
     /**
-     * Execute the migration
+     * Execute migration
      *
      * @param Schema $schema
      * 
@@ -42,7 +42,7 @@ final class Version20240930120154 extends AbstractMigration
     }
 
     /**
-     * Undo the migration
+     * Undo migration
      *
      * @param Schema $schema
      * 

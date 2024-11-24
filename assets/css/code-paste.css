@@ -1,35 +1,35 @@
-/* paste save/view style */
+/* main paste save and view page style */
 * {
     background-color: #282c34;
 }
 
 textarea {
-    padding: 10px;
     resize: none;
-    border: none !important;
-    outline: none !important;
-    width: 100%;
-    height: 97%;
     position: fixed;
     top: 0px;
-    font-size: 16px !important;
     left: 0px;
-    background-color: #282c34;
+    height: 97%;
+    width: 100%;
+    padding: 10px;
     color: #abb2bf;
+    border: none !important;
+    outline: none !important;
+    font-size: 16px !important;
+    background-color: #282c34;
     font-family: monospace !important;
 }
 
 .icon {
     position: fixed;
-    right: 10px;
     top: 10px;
+    right: 10px;
     z-index: 9999;
     cursor: pointer;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
     user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
     -webkit-user-drag: none;
+    -webkit-user-select: none;
 }
 
 .icon img {
@@ -39,24 +39,24 @@ textarea {
 }
 
 #copy-button {
-    z-index: 1;
     position: fixed;
-    float: right;
-    right: 5px;
+    z-index: 1;
     top: 5px;
-    border: 1px solid rgb(55, 55, 255);
-    background-color: rgb(74, 74, 255);
-    text-align: center;
+    right: 5px;
+    float: right;
     color: white;
     font-size: 16px;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
     border-radius: 3px;
+    border: 1px solid rgb(55, 55, 255);
+    background-color: rgb(74, 74, 255);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #copy-button:hover {
-    background-color: rgb(59, 59, 255);
     cursor: pointer;
+    background-color: rgb(59, 59, 255);
 }
 
 code {
@@ -71,9 +71,9 @@ code {
 }
 
 .hljs {
+    padding: .5em;
     display: block;
     overflow-x: auto;
-    padding: .5em;
     color: #abb2bf;
     background: #282c34
 }

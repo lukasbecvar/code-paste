@@ -1,4 +1,4 @@
-/* view highlight function */ 
+/* code highlight functionality */
 import hljs from 'highlight.js';
 
 // init code highligh

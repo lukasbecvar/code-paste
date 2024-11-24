@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Class Version20241016101336
  * 
- * The migration for add views column to paste table
+ * Migration for add views column to paste table
  * 
  * @package DoctrineMigrations
  */
@@ -27,7 +27,7 @@ final class Version20241016101336 extends AbstractMigration
     }
 
     /**
-     * Execute the migration
+     * Execute migration
      *
      * @param Schema $schema
      * 
@@ -39,7 +39,7 @@ final class Version20241016101336 extends AbstractMigration
     }
 
     /**
-     * Undo the migration
+     * Undo migration
      *
      * @param Schema $schema
      * 

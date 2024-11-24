@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Class Version20241016085550
  * 
- * The migration for add browser information to pastes table
+ * Migration for add browser information to pastes table
  * 
  * @package DoctrineMigrations
  */
@@ -27,7 +27,7 @@ final class Version20241016085550 extends AbstractMigration
     }
 
     /**
-     * Execute the migration
+     * Execute migration
      *
      * @param Schema $schema
      * 
@@ -39,7 +39,7 @@ final class Version20241016085550 extends AbstractMigration
     }
 
     /**
-     * Undo the migration
+     * Undo migration
      *
      * @param Schema $schema
      * 
