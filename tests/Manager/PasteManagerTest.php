@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class PasteManagerTest
  *
- * Test for paste storage manager
+ * Test cases for paste manager
  *
  * @package App\Tests\Manager
  */
@@ -35,7 +35,7 @@ class PasteManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        // create mocks for dependencies
+        // mock dependencies
         $this->appUtilMock = $this->createMock(AppUtil::class);
         $this->logManagerMock = $this->createMock(LogManager::class);
         $this->securityUtilMock = $this->createMock(SecurityUtil::class);
@@ -44,7 +44,7 @@ class PasteManagerTest extends TestCase
         $this->pasteRepositoryMock = $this->createMock(PasteRepository::class);
         $this->entityManagerMock = $this->createMock(EntityManagerInterface::class);
 
-        // instantiate the PasteManager with the mocked dependencies
+        // create paste manager instance
         $this->pasteManager = new PasteManager(
             $this->appUtilMock,
             $this->logManagerMock,
@@ -57,40 +57,31 @@ class PasteManagerTest extends TestCase
     }
 
     /**
-     * test successful paste saving
+     * test save paste with success response
      *
      * @return void
      */
-    public function testSavePasteSuccess(): void
+    public function testSavePasteWithSuccessResponse(): void
     {
-        // set up expected behavior of mocks
+        // mock expected behavior of dependencies
         $this->visitorInfoUtilMock->method('getIP')->willReturn('192.168.1.1');
         $this->visitorInfoUtilMock->method('getBrowserShortify')->willReturn('Chrome');
         $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
         $this->appUtilMock->method('isSsl')->willReturn(false);
         $this->appUtilMock->method('getHttpHost')->willReturn('localhost');
 
-        // create a mock for the Paste entity
-        $pasteMock = $this->createMock(Paste::class);
-        $pasteMock->method('setToken')->willReturnSelf();
-        $pasteMock->method('setContent')->willReturnSelf();
-        $pasteMock->method('setViews')->willReturnSelf();
-        $pasteMock->method('setTime')->willReturnSelf();
-        $pasteMock->method('setBrowser')->willReturnSelf();
-        $pasteMock->method('setIpAddress')->willReturnSelf();
-
-        // expect the entityManager to call persist and flush
+        // expect entity manager to call persist and flush
         $this->entityManagerMock->expects($this->once())
             ->method('persist')
             ->with($this->isInstanceOf(Paste::class));
         $this->entityManagerMock->expects($this->once())
             ->method('flush');
 
-        // Eexpect the logManager to be called upon successful save
+        // expect log manager to be called upon successful save
         $this->logManagerMock->expects($this->once())
             ->method('externalLog');
 
-        // call the method under test
+        // call tested method
         $this->pasteManager->savePaste('sample-token', 'This is a test paste.');
     }
 
@@ -101,17 +92,17 @@ class PasteManagerTest extends TestCase
      */
     public function testSavePasteWithEmptyContent(): void
     {
-        // set up expected behavior of mocks
+        // mock expected behavior of dependencies
         $this->visitorInfoUtilMock->method('getIP')->willReturn('192.168.1.1');
         $this->visitorInfoUtilMock->method('getBrowserShortify')->willReturn('Chrome');
         $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
 
-        // expect the ErrorManager to call handleError
+        // expect error manager call
         $this->errorManagerMock->expects($this->once())
             ->method('handleError')
             ->with('paste content is empty', Response::HTTP_BAD_REQUEST);
 
-        // call the method under test
+        // call tested method
         $this->pasteManager->savePaste('sample-token', '');
     }
 
@@ -122,17 +113,17 @@ class PasteManagerTest extends TestCase
      */
     public function testSavePasteWithLongContent(): void
     {
-        // set up expected behavior of mocks
+        // mock expected behavior of dependencies
         $this->visitorInfoUtilMock->method('getIP')->willReturn('192.168.1.1');
         $this->visitorInfoUtilMock->method('getBrowserShortify')->willReturn('Chrome');
         $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
 
-        // expect the ErrorManager to call handleError
+        // expect error manager call
         $this->errorManagerMock->expects($this->once())
             ->method('handleError')
             ->with('paste content is too long', Response::HTTP_BAD_REQUEST);
 
-        // call the method under test
+        // call tested method
         $this->pasteManager->savePaste('sample-token', str_repeat('A', 200001));
     }
 }

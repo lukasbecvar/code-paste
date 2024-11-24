@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 /**
  * Class ExceptionEventSubscriberTest
  *
- * Test the exception event subscriber
+ * Test cases for exception event handeling
  *
  * @package App\Tests\Event\Subscriber
  */
@@ -46,18 +46,18 @@ class ExceptionEventSubscriberTest extends TestCase
             ]
         ]);
 
-        // create instance of the ExceptionEventSubscriber
+        // create exception event subscriber instance
         $this->subscriber = new ExceptionEventSubscriber($this->appUtil, $this->logger, $this->errorController);
     }
 
     /**
-     * Test log error for non excluded http code
+     * Test handle exception with non-excluded http code
      *
      * @return void
      */
-    public function testOnKernelExceptionLogsErrorForNonExcludedHttpCode(): void
+    public function testHandleExceptionWithNonExcludedHttpCode(): void
     {
-        // expect that logger->error() will be called once
+        // expect error logger call
         $this->logger->expects($this->once())->method('error')->with('Test Exception Message');
 
         // expect error controller call
@@ -72,18 +72,18 @@ class ExceptionEventSubscriberTest extends TestCase
         $request = $this->createMock(Request::class);
         $event = new ExceptionEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $exception);
 
-        // call the onKernelException method
+        // call tested method
         $this->subscriber->onKernelException($event);
     }
 
     /**
-     * Test does not log error for excluded http code
+     * Test handle exception with excluded http code
      *
      * @return void
      */
-    public function testOnKernelExceptionDoesNotLogExcludedHttpCode(): void
+    public function testHandleExceptionWithExcludedHttpCode(): void
     {
-        // expect that logger->error() will NOT be called
+        // expect error logger not called
         $this->logger->expects($this->never())->method('error');
 
         // expect error controller call
@@ -97,7 +97,7 @@ class ExceptionEventSubscriberTest extends TestCase
         $request = $this->createMock(Request::class);
         $event = new ExceptionEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $exception);
 
-        // call the onKernelException method
+        // call tested method
         $this->subscriber->onKernelException($event);
     }
 }

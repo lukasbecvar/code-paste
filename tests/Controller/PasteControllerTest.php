@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * Class PasteControllerTest
  *
- * Test cases for PasteController routes
+ * Test cases for paste save/view controller
  *
  * @package App\Tests\Controller
  */
@@ -25,18 +25,17 @@ class PasteControllerTest extends WebTestCase
     }
 
     /**
-     * Test load index page
+     * Test load index page (show save paste view)
      *
      * @return void
      */
-    public function testLoadIndex(): void
+    public function testLoadIndexPage(): void
     {
-        // make get request
         $this->client->request('GET', '/');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('img[src="/assets/images/save.svg"]');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**
@@ -46,7 +45,6 @@ class PasteControllerTest extends WebTestCase
      */
     public function testSaveEmptyPaste(): void
     {
-        // make request
         $this->client->request('POST', '/save', [
             'paste-content' => '',
             'token' => ByteString::fromRandom(16),
@@ -57,13 +55,12 @@ class PasteControllerTest extends WebTestCase
     }
 
     /**
-     * Test save new paste
+     * Test save new paste with success response
      *
      * @return void
      */
-    public function testSaveNewPaste(): void
+    public function testSaveNewPasteSuccess(): void
     {
-        // make request
         $this->client->request('POST', '/save', [
             'paste-content' => 'test content',
             'token' => ByteString::fromRandom(16),
@@ -80,11 +77,10 @@ class PasteControllerTest extends WebTestCase
      */
     public function testViewPaste(): void
     {
-        // make get request
         $this->client->request('GET', '/view?f=zSc0Uh8L1gsA7a6u');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('code', 'this is a test paste');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 }

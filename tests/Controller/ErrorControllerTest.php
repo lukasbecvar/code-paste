@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * Class ErrorControllerTest
  *
- * Test cases for handling different error pages
+ * Test cases for error handling controller
  *
  * @package App\Tests
  */
@@ -24,43 +24,40 @@ class ErrorControllerTest extends WebTestCase
     }
 
     /**
-     * Test the default error page
+     * Test render default error page
      *
      * @return void
      */
-    public function testErrorDefault(): void
+    public function testRenderDefaultErrorPage(): void
     {
-        // make get request
         $this->client->request('GET', '/error');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('.error-page-msg', 'Unknown error, please contact the service administrator');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**
-     * Test error block for maintenance mode
+     * Test block maintenance page rendering
      *
      * @return void
      */
-    public function testErrorBlockMaintenance(): void
+    public function testBlockMaintenancePageRendering(): void
     {
-        // make get request
         $this->client->request('GET', '/error?code=maintenance');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('.error-page-msg', 'Unknown error, please contact the service administrator');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**
-     * Test error for Bad Request (400)
+     * Test render Bad Request error (400)
      *
      * @return void
      */
-    public function testError400(): void
+    public function testRenderBadRequestErrorPage(): void
     {
-        // make get request
         $this->client->request('GET', '/error?code=400');
 
         // assert response
@@ -69,47 +66,44 @@ class ErrorControllerTest extends WebTestCase
     }
 
     /**
-     * Test error for Page Not Found (404)
+     * Test render Not Found error (404)
      *
      * @return void
      */
-    public function testError404(): void
+    public function testRenderNotFoundErrorPage(): void
     {
-        // make get request
         $this->client->request('GET', '/error?code=404');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('.error-page-msg', 'Error: Page not found');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**
-     * Test error for Too Many Requests (429)
+     * Test render Too Many Requests error (429)
      *
      * @return void
      */
-    public function testError429(): void
+    public function testRenderTooManyRequestsErrorPage(): void
     {
-        // make get request
         $this->client->request('GET', '/error?code=429');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('.error-page-msg', 'Error: Too Many Requests');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     /**
-     * Test error for Internal Server Error (500)
+     * Test render Internal Server Error (500)
      *
      * @return void
      */
-    public function testError500(): void
+    public function testRenderInternalServerErrorPage(): void
     {
-        // make get request
         $this->client->request('GET', '/error?code=500');
 
         // assert response
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('.error-page-msg', 'Internal Server Error');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 }

@@ -4,26 +4,27 @@ namespace App\Tests\Util;
 
 use App\Util\AppUtil;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class AppUtilTest
  *
- * This class tests the AppUtil class
+ * Test cases for app util
  *
  * @package App\Tests\Util
  */
 class AppUtilTest extends TestCase
 {
     private AppUtil $appUtil;
-    private KernelInterface $kernelInterface;
+    private KernelInterface & MockObject $kernelInterface;
 
     protected function setUp(): void
     {
-        // mock kernel interface
+        // mock dependencies
         $this->kernelInterface = $this->createMock(KernelInterface::class);
 
-        // create instance of AppUtil
+        // create app util instance
         $this->appUtil = new AppUtil($this->kernelInterface);
     }
 
@@ -32,7 +33,7 @@ class AppUtilTest extends TestCase
      *
      * @return void
      */
-    public function testGetEnvValue(): void
+    public function testGetEnvironmentVariable(): void
     {
         $result = $this->appUtil->getEnvValue('APP_ENV');
         $this->assertEquals($result, $_ENV['APP_ENV']);
@@ -43,7 +44,7 @@ class AppUtilTest extends TestCase
      *
      * @return void
      */
-    public function testIsSsl(): void
+    public function testIsSslCheck(): void
     {
         $_SERVER['HTTPS'] = 'on';
         $this->assertTrue($this->appUtil->isSsl());
@@ -56,11 +57,11 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test check maintenance mode enabled
+     * Test check maintenance mode status
      *
      * @return void
      */
-    public function testIsMaintenance(): void
+    public function testIsMaintenanceStatus(): void
     {
         $_ENV['MAINTENANCE_MODE'] = 'true';
         $this->assertTrue($this->appUtil->isMaintenance());
@@ -70,11 +71,11 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test check SSL only enabled
+     * Test check SSL only mode status
      *
      * @return void
      */
-    public function testIsSslOnly(): void
+    public function testIsSSLOnlyStatus(): void
     {
         $_ENV['SSL_ONLY'] = 'true';
         $this->assertTrue($this->appUtil->isSSLOnly());
@@ -84,11 +85,11 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test check dev mode enabled
+     * Test check dev mode status
      *
      * @return void
      */
-    public function testIsDevMode(): void
+    public function testCheckDevModeStatus(): void
     {
         $_ENV['APP_ENV'] = 'dev';
         $this->assertTrue($this->appUtil->isDevMode());
@@ -101,11 +102,11 @@ class AppUtilTest extends TestCase
     }
 
     /**
-     * Test check is encryption mode enabled
+     * Test check encryption mode status
      *
      * @return void
      */
-    public function testIsEncryptionMode(): void
+    public function testCheckEncryptionModeStatus(): void
     {
         $_ENV['ENCRYPTION_MODE'] = 'true';
         $this->assertTrue($this->appUtil->isEncryptionMode());

@@ -19,9 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DatabaseOnlineMiddlewareTest extends TestCase
 {
-    /** tested middleware */
     private DatabaseOnlineMiddleware $middleware;
-
     private ErrorManager & MockObject $errorManagerMock;
     private Connection & MockObject $doctrineConnectionMock;
 
@@ -31,7 +29,7 @@ class DatabaseOnlineMiddlewareTest extends TestCase
         $this->errorManagerMock = $this->createMock(ErrorManager::class);
         $this->doctrineConnectionMock = $this->createMock(Connection::class);
 
-        // create instance of DatabaseOnlineMiddleware
+        // create database online middleware instance
         $this->middleware = new DatabaseOnlineMiddleware(
             $this->errorManagerMock,
             $this->doctrineConnectionMock
@@ -39,42 +37,42 @@ class DatabaseOnlineMiddlewareTest extends TestCase
     }
 
     /**
-     * Test database connection succeeds
+     * Test database connection success
      *
      * @return void
      */
-    public function testDatabaseConnectionSucceeds(): void
+    public function testDatabaseConnectionSuccess(): void
     {
         // mock successful database connection
         $this->doctrineConnectionMock->expects($this->once())->method('executeQuery')->with('SELECT 1');
 
-        // expect no error handling called
+        // expect error manager not called
         $this->errorManagerMock->expects($this->never())->method('handleError');
 
-        // execute method
+        // execute tested method
         $this->middleware->onKernelRequest();
     }
 
     /**
-     * Test database connection fails
+     * Test database connection failure
      *
      * @return void
      */
-    public function testDatabaseConnectionFails(): void
+    public function testDatabaseConnectionFailure(): void
     {
         // mock database connection failure
         $exceptionMessage = 'Connection refused';
         $this->doctrineConnectionMock->expects($this->once())
             ->method('executeQuery')->with('SELECT 1')->willThrowException(new Exception($exceptionMessage));
 
-        // expect error handling called with HTTP_INTERNAL_SERVER_ERROR status
+        // expect error manager to be called
         $this->errorManagerMock->expects($this->once())
             ->method('handleError')->with(
                 'database connection error: ' . $exceptionMessage,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
 
-        // execute method
+        // execute tested method
         $this->middleware->onKernelRequest();
     }
 }

@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Class JsonUtilTest
  *
- * Test cases for json utils
+ * Test cases for json util
  *
  * @package Tests\Unit\Util
  */
@@ -24,7 +24,7 @@ class JsonUtilTest extends TestCase
         // mock dependencies
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        // create instance of JsonUtil
+        // create json util instance
         $this->jsonUtil = new JsonUtil($this->logger);
     }
 

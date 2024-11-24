@@ -11,7 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Class LogManagerTest
  *
- * Test class for log manager
+ * Test cases for log manager
  *
  * @package App\Tests\Manager
  */
@@ -23,25 +23,25 @@ class LogManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        // create mocks for dependencies
+        // mock dependencies
         $this->appUtilMock = $this->createMock(AppUtil::class);
         $this->jsonUtilMock = $this->createMock(JsonUtil::class);
 
-        // initialize LogManager with mocked dependencies
+        // create log manager instance
         $this->logManager = new LogManager($this->appUtilMock, $this->jsonUtilMock);
 
         // set environment variables
         $_ENV['EXTERNAL_LOG_ENABLED'] = 'true';
-        $_ENV['EXTERNAL_LOG_URL'] = 'https://external-log-service.com/log';
         $_ENV['EXTERNAL_LOG_TOKEN'] = 'test-token';
+        $_ENV['EXTERNAL_LOG_URL'] = 'https://external-log-service.com/log';
     }
 
     /**
-     * Test successful external log
+     * Test successful external log with success response
      *
      * @return void
      */
-    public function testExternalLogSuccess(): void
+    public function testExternalLogWithSuccessResponse(): void
     {
         // simulate external logging is enabled
         $this->appUtilMock->method('getEnvValue')->willReturn('true');
@@ -51,27 +51,27 @@ class LogManagerTest extends TestCase
             . urlencode('code-paste: log') . '&message='
             . urlencode('code-paste: ' . $message) . '&level=4';
 
-        // expect getJson to be called with the correct URL and method
+        // expect get json call
         $this->jsonUtilMock->expects($this->once())->method('getJson')->with($expectedUrl, 'POST');
 
-        // call the method under test
+        // call tested method
         $this->logManager->externalLog($message);
     }
 
     /**
-     * Test external log disabled
+     * Test external log with logging is disabled
      *
      * @return void
      */
-    public function testExternalLogDisabled(): void
+    public function testExternalLogWithLoggingIsDisabled(): void
     {
         // simulate external logging is disabled
         $this->appUtilMock->method('getEnvValue')->willReturn('false');
 
-        // ensure getJson is never called when logging is disabled
+        // expect get json not to be called
         $this->jsonUtilMock->expects($this->never())->method('getJson');
 
-        // call the method under test
+        // call tested method
         $this->logManager->externalLog('Log should not be sent');
     }
 }
