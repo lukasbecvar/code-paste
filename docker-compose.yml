@@ -17,7 +17,7 @@ services:
             - main
         command: composer install
 
-    # node service for building assets
+    # node service for building frontend assets
     node:
         image: node:latest
         container_name: code_paste_node
@@ -28,7 +28,7 @@ services:
             - main
         command: npm run watch
 
-    # database container
+    # database service
     mysql:
         image: mysql:latest
         container_name: code_paste_mysql
@@ -45,7 +45,7 @@ services:
         networks:
             - main
 
-    # web server container
+    # web server service
     php:
         build:
             context: .

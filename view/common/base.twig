@@ -7,7 +7,7 @@
     <meta content="Text and code sharing tool" name="description">
     <link rel="icon" href={{ asset('assets/images/save.svg') }} type="image/x-icon"/>
     
-    {# REDIRECT TO ERROR IF JAVASCRIPT IS DISABLED #}
+    {# REDIRECT TO ERROR PAGE IF JAVASCRIPT IS DISABLED #}
     <noscript>
         <meta http-equiv="refresh" content="0; URL='{{ path('error_by_code', {code: '426'}) }}'" />
     </noscript>
