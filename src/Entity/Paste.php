@@ -34,7 +34,7 @@ class Paste
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $views = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?DateTimeInterface $time = null;
 
     #[ORM\Column(length: 255)]
