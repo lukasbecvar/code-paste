@@ -11,29 +11,47 @@ namespace App\Util;
  */
 class VisitorInfoUtil
 {
-    /**
-     * Get current visitor ip address
-     *
-     * @return string|null The visitor ip address
-     */
-    public function getIP(): ?string
+    private SecurityUtil $securityUtil;
+
+    public function __construct(SecurityUtil $securityUtil)
     {
-        // check client IP
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        }
-
-        // check forwarded IP (get IP from cloudflare visitors)
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-
-        // default remote addr get
-        return $_SERVER['REMOTE_ADDR'];
+        $this->securityUtil = $securityUtil;
     }
 
     /**
-     * Get current visitor browser user agent
+     * Get visitor IP address
+     *
+     * @return string|null The current visitor IP address
+     */
+    public function getIP(): ?string
+    {
+        $ipAddress = null;
+
+        // check client IP
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ipAddress = $_SERVER['HTTP_CLIENT_IP'];
+        }
+
+        // check forwarded IP (get IP from cloudflare visitors)
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) && $ipAddress == null) {
+            $ipAddress = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? 'Unknown';
+        }
+
+        // get ip address from remote addr
+        if ($ipAddress == null) {
+            $ipAddress = $_SERVER['REMOTE_ADDR'];
+        }
+
+        // escape ip address
+        if ($ipAddress !== null) {
+            $ipAddress = $this->securityUtil->escapeString($ipAddress);
+        }
+
+        return $ipAddress ?? 'Unknown';
+    }
+
+    /**
+     * Get user agent
      *
      * @return string|null The user agent
      */
@@ -46,7 +64,7 @@ class VisitorInfoUtil
         $browserAgent = $userAgent !== null ? $userAgent : 'Unknown';
 
         // escape user agent
-        $browserAgent = htmlspecialchars($browserAgent, ENT_QUOTES | ENT_HTML5);
+        $browserAgent = $this->securityUtil->escapeString($browserAgent);
 
         return $browserAgent;
     }
