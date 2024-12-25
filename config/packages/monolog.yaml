@@ -14,12 +14,6 @@ monolog:
             handler: exception
             excluded_http_codes: [400, 404, 405, 426, 503]
 
-        # stdout log handler (container logs)
-        stdout:
-            type: stream
-            level: error
-            path: 'php://stdout'
-
 # dev log config
 when@dev:
     monolog:
@@ -33,3 +27,7 @@ when@dev:
                 type: console
                 process_psr_3_messages: false
                 channels: ["!event", "!doctrine", "!console"]
+            stdout:
+                type: stream
+                level: error
+                path: 'php://stdout'
