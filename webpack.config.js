@@ -7,10 +7,10 @@ Encore
     .setPublicPath('/assets')
 
     // register css
-    .addEntry('loading-css', './assets/css/loading.css')
-    .addEntry('scrollbar-css', './assets/css/scrollbar.css')
-    .addEntry('code-paste-css', './assets/css/code-paste.css')
-    .addEntry('error-page-css', './assets/css/error-page.css')
+    .addEntry('loading-css', './assets/css/loading.scss')
+    .addEntry('scrollbar-css', './assets/css/scrollbar.scss')
+    .addEntry('code-paste-css', './assets/css/code-paste.scss')
+    .addEntry('error-page-css', './assets/css/error-page.scss')
 
     .addEntry('loading-js', './assets/js/loading.js')
     .addEntry('code-paste-js', './assets/js/code-paste.js')
@@ -24,6 +24,7 @@ Encore
 
     // other webpack configs
     .splitEntryChunks()
+    .enableSassLoader()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()

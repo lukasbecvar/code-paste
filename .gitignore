@@ -18,6 +18,3 @@ package-lock.json
 
 # docker services
 /.docker/services
-
-# test files
-.phpcs-cache
