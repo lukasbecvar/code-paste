@@ -79,8 +79,8 @@ class PasteManager
             );
         }
 
-        // check if paste content is not empty
-        if ($content == null || $content == '') {
+        // check if paste content is empty
+        if (empty($content)) {
             $this->errorManager->handleError(
                 'paste content is empty',
                 Response::HTTP_BAD_REQUEST
