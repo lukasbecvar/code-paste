@@ -212,4 +212,24 @@ class PasteManager
             );
         }
     }
+
+    /**
+     * Get number of pastes
+     *
+     * @return int The number of pastes
+     */
+    public function getPastesCount(): int
+    {
+        return $this->pasteRepository->count();
+    }
+
+    /**
+     * Get total views count
+     *
+     * @return int The total views count
+     */
+    public function getTotalViews(): int
+    {
+        return $this->pasteRepository->getTotalViews();
+    }
 }

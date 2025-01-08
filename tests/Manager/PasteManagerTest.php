@@ -126,4 +126,38 @@ class PasteManagerTest extends TestCase
         // call tested method
         $this->pasteManager->savePaste('sample-token', str_repeat('A', 200001));
     }
+
+    /**
+     * Test get pastes count
+     *
+     * @return void
+     */
+    public function testGetPastesCount(): void
+    {
+        // mock expected behavior of dependencies
+        $this->pasteRepositoryMock->method('count')->willReturn(10);
+
+        // call tested method
+        $result = $this->pasteManager->getPastesCount();
+
+        // assert result
+        $this->assertSame(10, $result);
+    }
+
+    /**
+     * Test get total views count
+     *
+     * @return void
+     */
+    public function testGetTotalViews(): void
+    {
+        // mock expected behavior of dependencies
+        $this->pasteRepositoryMock->method('getTotalViews')->willReturn(10);
+
+        // call tested method
+        $result = $this->pasteManager->getTotalViews();
+
+        // assert result
+        $this->assertSame(10, $result);
+    }
 }

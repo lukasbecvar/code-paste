@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use Exception;
 use App\Entity\Paste;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -38,5 +39,26 @@ class PasteRepository extends ServiceEntityRepository
         $result = $query->getOneOrNullResult();
 
         return $result;
+    }
+
+    /**
+     * Get the sum of views from all pastes
+     *
+     * @return int The total views count
+     */
+    public function getTotalViews(): int
+    {
+        // query builder to sum views column
+        $qb = $this->createQueryBuilder('p');
+        $qb->select('SUM(p.views) AS totalViews');
+
+        try {
+            // execute query and get result
+            $result = $qb->getQuery()->getSingleScalarResult();
+        } catch (Exception) {
+            return 0;
+        }
+
+        return (int) $result;
     }
 }
