@@ -46,6 +46,22 @@ class MetricsExportControllerTest extends WebTestCase
     }
 
     /**
+     * Test get metrics when metrics exporter is disabled
+     *
+     * @return void
+     */
+    public function testGetMetricsWhenMetricsExporterDisabled(): void
+    {
+        // simulate metrics exporter disabled
+        $_ENV['METRICS_EXPORTER_ENABLED'] = 'false';
+
+        $this->client->request('GET', '/metrics/export');
+
+        // assert response
+        $this->assertResponseStatusCodeSame(JsonResponse::HTTP_FORBIDDEN);
+    }
+
+    /**
      * Test get metrics with forbidden ip
      *
      * @return void
