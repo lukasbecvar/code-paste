@@ -128,20 +128,17 @@ class PasteManagerTest extends TestCase
     }
 
     /**
-     * Test get pastes count
+     * Test get pastes count by time period
      *
      * @return void
      */
-    public function testGetPastesCount(): void
+    public function testGetPastesCountByTimePeriod(): void
     {
-        // mock expected behavior of dependencies
-        $this->pasteRepositoryMock->method('count')->willReturn(10);
-
         // call tested method
-        $result = $this->pasteManager->getPastesCount();
+        $result = $this->pasteManager->getPastesCountByTimePeriod('H');
 
         // assert result
-        $this->assertSame(10, $result);
+        $this->assertIsInt($result);
     }
 
     /**

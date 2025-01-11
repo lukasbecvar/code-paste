@@ -214,13 +214,13 @@ class PasteManager
     }
 
     /**
-     * Get number of pastes
+     * Get count of pastes by time period
      *
      * @return int The number of pastes
      */
-    public function getPastesCount(): int
+    public function getPastesCountByTimePeriod(string $filter): int
     {
-        return $this->pasteRepository->count();
+        return count($this->pasteRepository->findByTimeFilter($filter));
     }
 
     /**

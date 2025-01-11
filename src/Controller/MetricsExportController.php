@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Util\AppUtil;
-use App\Manager\PasteManager;
 use App\Util\VisitorInfoUtil;
+use App\Manager\PasteManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,25 +33,30 @@ class MetricsExportController extends AbstractController
     /**
      * Export paste metrics
      *
+     * @param Request $request The request object
+     *
      * @return JsonResponse The paste metrics
      */
     #[Route('/metrics/export', methods: ['GET'], name: 'metrics_export')]
-    public function exportMetrics(): JsonResponse
+    public function exportMetrics(Request $request): JsonResponse
     {
+        // get time period from request
+        $timePeriod = (string) $request->query->get('time_period', 'H');
+
         // check if metrics exporter is enabled
         if ($this->appUtil->getEnvValue('METRICS_EXPORTER_ENABLED') != 'true') {
             return $this->json(['error' => 'Metrics exporter is not enabled.'], JsonResponse::HTTP_FORBIDDEN);
         }
 
         // check if visitor ip is allowed to access metrics
-        if ($this->visitorInfoUtil->getIP() !== $this->appUtil->getEnvValue('METRICS_EXPORTER_ALLOWED_IP')) {
+        $allowedIp = $this->appUtil->getEnvValue('METRICS_EXPORTER_ALLOWED_IP');
+        if ($allowedIp !== '%' && $this->visitorInfoUtil->getIP() !== $allowedIp) {
             return $this->json(['error' => 'Your IP is not allowed to access metrics.'], JsonResponse::HTTP_FORBIDDEN);
         }
 
         // return metrics data
         return $this->json([
-            'pastes_count' => $this->pasteManager->getPastesCount(),
-            'total_paste_views' => $this->pasteManager->getTotalViews()
+            'pastes_count' => $this->pasteManager->getPastesCountByTimePeriod($timePeriod),
         ], JsonResponse::HTTP_OK);
     }
 }
