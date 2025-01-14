@@ -23,7 +23,7 @@ jobs:
 
     # install php dependencies
     - name: Install dependencies
-      run: composer install --no-interaction --no-progress --no-suggest
+      run: composer install --no-interaction --no-progress
 
     # check code with code sniffer
     - name: Run PHP CodeSniffer
