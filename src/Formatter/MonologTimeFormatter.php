@@ -18,4 +18,3 @@ class MonologTimeFormatter extends LineFormatter
         parent::__construct(null, 'Y-m-d H:i:s', false, false, false);
     }
 }
-
