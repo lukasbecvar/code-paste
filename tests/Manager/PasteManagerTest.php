@@ -100,7 +100,7 @@ class PasteManagerTest extends TestCase
         // expect error manager call
         $this->errorManagerMock->expects($this->once())
             ->method('handleError')
-            ->with('paste content is empty', Response::HTTP_BAD_REQUEST);
+            ->with('Paste content is empty', Response::HTTP_BAD_REQUEST);
 
         // call tested method
         $this->pasteManager->savePaste('sample-token', '');
@@ -121,7 +121,7 @@ class PasteManagerTest extends TestCase
         // expect error manager call
         $this->errorManagerMock->expects($this->once())
             ->method('handleError')
-            ->with('paste content is too long', Response::HTTP_BAD_REQUEST);
+            ->with('Paste content is too long', Response::HTTP_BAD_REQUEST);
 
         // call tested method
         $this->pasteManager->savePaste('sample-token', str_repeat('A', 200001));

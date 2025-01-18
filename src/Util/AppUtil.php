@@ -162,7 +162,7 @@ class AppUtil
 
         // check if current environment file exists
         if (!file_exists($envFile)) {
-            throw new Exception(".env.$env file not found");
+            throw new Exception('.env.' . $env . 'file not found');
         }
 
         // get current environment content
@@ -170,7 +170,7 @@ class AppUtil
 
         // check if current environment loaded correctly
         if ($envContent === false) {
-            throw new Exception("Failed to read .env.$env file");
+            throw new Exception('Failed to read .env. ' . $env . ' file');
         }
 
         try {

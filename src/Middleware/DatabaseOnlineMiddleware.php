@@ -39,7 +39,7 @@ class DatabaseOnlineMiddleware
             $this->doctrineConnection->executeQuery('SELECT 1');
         } catch (Exception $e) {
             $this->errorManager->handleError(
-                'database connection error: ' . $e->getMessage(),
+                'Database connection error: ' . $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }

@@ -56,7 +56,7 @@ class MetricsExportController extends AbstractController
 
         // return metrics data
         return $this->json([
-            'pastes_count' => $this->pasteManager->getPastesCountByTimePeriod($timePeriod),
+            'pastes_count' => $this->pasteManager->getPastesCountByTimePeriod($timePeriod)
         ], JsonResponse::HTTP_OK);
     }
 }

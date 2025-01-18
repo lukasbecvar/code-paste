@@ -66,7 +66,7 @@ class PasteManager
         // check if visitor ip address is null
         if ($ipAddress == null) {
             $this->errorManager->handleError(
-                'error getting visitor IP address',
+                'Error getting visitor IP address',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -74,7 +74,7 @@ class PasteManager
         // check if visitor browser is null
         if ($browser == null) {
             $this->errorManager->handleError(
-                'error getting visitor browser info',
+                'Error getting visitor browser info',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -82,7 +82,7 @@ class PasteManager
         // check if paste content is empty
         if (empty($content)) {
             $this->errorManager->handleError(
-                'paste content is empty',
+                'Paste content is empty',
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -90,7 +90,7 @@ class PasteManager
         // check max content length reached
         if (strlen($content) > 200000) {
             $this->errorManager->handleError(
-                'paste content is too long',
+                'Paste content is too long',
                 Response::HTTP_BAD_REQUEST
             );
         }
@@ -115,7 +115,7 @@ class PasteManager
             $this->entityManager->flush();
         } catch (Exception $e) {
             $this->errorManager->handleError(
-                'error saving paste: ' . $e->getMessage(),
+                'Error saving paste: ' . $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -144,7 +144,7 @@ class PasteManager
         // check if paste exists
         if (!$paste) {
             $this->errorManager->handleError(
-                'paste not found',
+                'Paste not found',
                 Response::HTTP_NOT_FOUND
             );
         }
@@ -156,7 +156,7 @@ class PasteManager
         // check if paste content is empty
         if ($content == null || $pasteId == null) {
             $this->errorManager->handleError(
-                'paste content is empty',
+                'Paste content is empty',
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
@@ -190,7 +190,7 @@ class PasteManager
         // check if paste exists
         if (!$paste) {
             $this->errorManager->handleError(
-                'paste not found',
+                'Paste not found',
                 Response::HTTP_NOT_FOUND
             );
         }
@@ -207,7 +207,7 @@ class PasteManager
             $this->entityManager->flush();
         } catch (Exception $e) {
             $this->errorManager->handleError(
-                'error to increase paste views: ' . $e->getMessage(),
+                'Error to increase paste views: ' . $e->getMessage(),
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }

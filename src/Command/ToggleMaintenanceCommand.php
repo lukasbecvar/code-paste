@@ -55,7 +55,7 @@ class ToggleMaintenanceCommand extends Command
             $this->appUtil->updateEnvValue('MAINTENANCE_MODE', $newMode);
 
             // return success status
-            $io->success("MAINTENANCE_MODE in .env has been set to true");
+            $io->success('MAINTENANCE_MODE in .env has been set to: ' . $newMode);
             return Command::SUCCESS;
         } catch (Exception $e) {
             $io->error('Error to toggle maintenance mode: ' . $e->getMessage());

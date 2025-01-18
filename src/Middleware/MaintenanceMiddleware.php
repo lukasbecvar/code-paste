@@ -42,11 +42,11 @@ class MaintenanceMiddleware
             // handle debug mode exception
             if ($this->appUtil->isDevMode()) {
                 $this->errorManager->handleError(
-                    msg: 'the application is under maintenance mode',
+                    msg: 'The application is under maintenance mode',
                     code: Response::HTTP_SERVICE_UNAVAILABLE
                 );
             } else {
-                $this->logger->error('the application is under maintenance mode');
+                $this->logger->error('The application is under maintenance mode');
             }
 
             // render maintenance page
