@@ -1,5 +1,5 @@
 # Code paste
-Self-hosted text/code paste service with syntax highlighting and paste content encryption.
+Self-hosted solution for sharing text and code snippets.
 
 ## Preview
 ![Paste view](.github/images/preview.png)
