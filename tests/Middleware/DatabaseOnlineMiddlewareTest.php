@@ -66,11 +66,10 @@ class DatabaseOnlineMiddlewareTest extends TestCase
             ->method('executeQuery')->with('SELECT 1')->willThrowException(new Exception($exceptionMessage));
 
         // expect error manager to be called
-        $this->errorManagerMock->expects($this->once())
-            ->method('handleError')->with(
-                'Database connection error: ' . $exceptionMessage,
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
+        $this->errorManagerMock->expects($this->once())->method('handleError')->with(
+            msg: 'database connection error: ' . $exceptionMessage,
+            code: Response::HTTP_INTERNAL_SERVER_ERROR
+        );
 
         // execute tested method
         $this->middleware->onKernelRequest();

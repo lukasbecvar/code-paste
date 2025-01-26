@@ -51,11 +51,11 @@ class ExceptionEventSubscriberTest extends TestCase
     }
 
     /**
-     * Test handle exception with non-excluded http code
+     * Test subscribe exception with non-excluded http code
      *
      * @return void
      */
-    public function testHandleExceptionWithNonExcludedHttpCode(): void
+    public function testSubscribeExceptionWithNonExcludedHttpCode(): void
     {
         // expect error logger call
         $this->logger->expects($this->once())->method('error')->with('Test Exception Message');
@@ -77,11 +77,11 @@ class ExceptionEventSubscriberTest extends TestCase
     }
 
     /**
-     * Test handle exception with excluded http code
+     * Test subscribe exception with excluded http code
      *
      * @return void
      */
-    public function testHandleExceptionWithExcludedHttpCode(): void
+    public function testSubscribeExceptionWithExcludedHttpCode(): void
     {
         // expect error logger not called
         $this->logger->expects($this->never())->method('error');

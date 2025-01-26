@@ -69,11 +69,10 @@ class SecurityCheckMiddlewareTest extends TestCase
         $this->appUtilMock->expects($this->once())->method('isSsl')->willReturn(false);
 
         // expect error manager call
-        $this->errorManagerMock->expects($this->once())
-            ->method('handleError')->with(
-                'SSL error: connection not running on ssl protocol',
-                Response::HTTP_UPGRADE_REQUIRED
-            );
+        $this->errorManagerMock->expects($this->once())->method('handleError')->with(
+            msg: 'SSL error: connection not running on ssl protocol',
+            code: Response::HTTP_UPGRADE_REQUIRED
+        );
 
         // execute tested method
         $this->middleware->onKernelRequest();

@@ -34,8 +34,8 @@ class SecurityCheckMiddleware
         // check if ssl only mode is enabled
         if ($this->appUtil->isSSLOnly() && !$this->appUtil->isSsl()) {
             $this->errorManager->handleError(
-                'SSL error: connection not running on ssl protocol',
-                Response::HTTP_UPGRADE_REQUIRED
+                msg: 'SSL error: connection not running on ssl protocol',
+                code: Response::HTTP_UPGRADE_REQUIRED
             );
         }
     }
