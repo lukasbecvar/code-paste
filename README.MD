@@ -39,4 +39,4 @@ Self-hosted solution for sharing text and code snippets.
 - MySQL
 
 ## License
-This software is licensed under the [MIT license](https://github.com/lukasbecvar/code-paste/blob/main/LICENSE).
+This software is licensed under the [MIT license](LICENSE).
