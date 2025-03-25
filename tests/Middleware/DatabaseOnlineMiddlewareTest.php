@@ -67,8 +67,8 @@ class DatabaseOnlineMiddlewareTest extends TestCase
 
         // expect error manager to be called
         $this->errorManagerMock->expects($this->once())->method('handleError')->with(
-            msg: 'database connection error: ' . $exceptionMessage,
-            code: Response::HTTP_INTERNAL_SERVER_ERROR
+            'database connection error: ' . $exceptionMessage,
+            Response::HTTP_INTERNAL_SERVER_ERROR
         );
 
         // execute tested method
