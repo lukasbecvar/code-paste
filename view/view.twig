@@ -19,11 +19,10 @@
 
     {# COPY TO CLIPBOARD SCRIPT #}
     <script>
-        document.getElementById('copy-button').addEventListener('click', function() {
-            var content = document.getElementById('content').innerText;
-            navigator.clipboard.writeText(content).then(function() {
-                console.log('Copied to clipboard!');
-            }).catch(function(error) {
+        document.getElementById('copy-button').addEventListener('click', function () {
+            var content = document.getElementById('content').textContent.trim();
+            navigator.clipboard.writeText(content).then(function () {
+            }).catch(function (error) {
                 console.log('Copy failed: ' + error);
             });
         });
