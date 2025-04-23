@@ -31,7 +31,7 @@ jobs:
           cd /services/website/code-paste
 
           # stop web server
-          php bin/console app:toggle:maintenance
+          php bin/console app:toggle:maintenance true
           sudo systemctl stop apache2
 
           # clear requirements & cache
@@ -62,7 +62,7 @@ jobs:
 
           # start apache
           sudo systemctl start apache2
-          php bin/console app:toggle:maintenance
+          php bin/console app:toggle:maintenance false
 
           # send push notifications to users
           php /services/website/admin-suite/bin/console app:notifications:send "[Actions]: new code-paste release deployed!"
