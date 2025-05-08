@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Exception;
+use App\Util\SecurityUtil;
 use App\Manager\PasteManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +19,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PasteController extends AbstractController
 {
+    private SecurityUtil $securityUtil;
     private PasteManager $pasteManager;
 
-    public function __construct(PasteManager $pasteManager)
+    public function __construct(SecurityUtil $securityUtil, PasteManager $pasteManager)
     {
+        $this->securityUtil = $securityUtil;
         $this->pasteManager = $pasteManager;
     }
 
@@ -106,6 +109,9 @@ class PasteController extends AbstractController
 
         // get paste content
         $paste = $this->pasteManager->getPaste($pasteFile);
+
+        // unescape HTML entities to show original content
+        $paste = $this->securityUtil->unescapeString($paste ?? '');
 
         // return raw content
         $response = new Response($paste);

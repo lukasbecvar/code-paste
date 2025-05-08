@@ -39,6 +39,20 @@ class SecurityUtilTest extends TestCase
     }
 
     /**
+     * Test unescape HTML entities
+     *
+     * @return void
+     */
+    public function testUnescapeString(): void
+    {
+        $escapedString = '&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;';
+        $expectedOutput = '<script>alert("xss")</script>';
+
+        // assert result
+        $this->assertEquals($expectedOutput, $this->securityUtil->unescapeString($escapedString));
+    }
+
+    /**
      * Test encrypt AES
      *
      * @return void

@@ -92,9 +92,15 @@ class PasteControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/raw?f=zSc0Uh8L1gsA7a6u');
 
+        // get response content
+        $content = $this->client->getResponse()->getContent();
+
         // assert response
+        $this->assertNotEmpty($content);
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertStringNotContainsString('&lt;', $content);
+        $this->assertStringNotContainsString('&gt;', $content);
+        $this->assertStringNotContainsString('&quot;', $content);
         $this->assertResponseHeaderSame('Content-Type', 'text/plain; charset=UTF-8');
-        $this->assertNotEmpty($this->client->getResponse()->getContent());
     }
 }

@@ -24,6 +24,18 @@ class SecurityUtil
     }
 
     /**
+     * Unescape HTML entities back to their original characters
+     *
+     * @param string $string The input string to unescape
+     *
+     * @return string The unescaped string
+     */
+    public function unescapeString(string $string): string
+    {
+        return htmlspecialchars_decode($string, ENT_QUOTES | ENT_HTML5);
+    }
+
+    /**
      * Encrypt string using AES encryption
      *
      * @param string $plainText The plain text to encrypt
