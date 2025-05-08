@@ -82,4 +82,19 @@ class PasteControllerTest extends WebTestCase
         $this->assertSelectorTextContains('code', 'this is a test paste');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
+
+    /**
+     * Test raw view paste
+     *
+     * @return void
+     */
+    public function testRawViewPaste(): void
+    {
+        $this->client->request('GET', '/raw?f=zSc0Uh8L1gsA7a6u');
+
+        // assert response
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertResponseHeaderSame('Content-Type', 'text/plain; charset=UTF-8');
+        $this->assertNotEmpty($this->client->getResponse()->getContent());
+    }
 }

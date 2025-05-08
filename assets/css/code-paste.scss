@@ -38,12 +38,7 @@ textarea {
     pointer-events: none;
 }
 
-#copy-button {
-    position: fixed;
-    z-index: 1;
-    top: 5px;
-    right: 5px;
-    float: right;
+#copy-button, #raw-button {
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -52,9 +47,10 @@ textarea {
     border: 1px solid rgb(55, 55, 255);
     background-color: rgb(74, 74, 255);
     font-family: Arial, Helvetica, sans-serif;
+    margin-left: 5px;
 }
 
-#copy-button:hover {
+#copy-button:hover, #raw-button:hover {
     cursor: pointer;
     background-color: rgb(59, 59, 255);
 }

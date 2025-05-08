@@ -6,9 +6,12 @@
     {{ encore_entry_script_tags('code-paste-js') }}
 
     <div style="position: relative;">
-        {# COPY BUTTON #}
-        <button id="copy-button">Copy</button>
-        
+        {# BUTTONS #}
+        <div style="position: fixed; top: 5px; right: 5px; z-index: 1;">
+            <button id="copy-button">Copy</button>
+            <button id="raw-button">Show Raw</button>
+        </div>
+
         {# PASTE CONTENT #}
         <code>
             <pre id="content">
@@ -16,15 +19,4 @@
             </pre>
         </code>
     </div>
-
-    {# COPY TO CLIPBOARD SCRIPT #}
-    <script>
-        document.getElementById('copy-button').addEventListener('click', function () {
-            var content = document.getElementById('content').textContent.trim();
-            navigator.clipboard.writeText(content).then(function () {
-            }).catch(function (error) {
-                console.log('Copy failed: ' + error);
-            });
-        });
-    </script>
 {% endblock %}

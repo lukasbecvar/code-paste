@@ -70,7 +70,7 @@ class PasteController extends AbstractController
     }
 
     /**
-     * View paste paste by token from database
+     * View paste by token from database
      *
      * @param Request $request The request object
      *
@@ -80,7 +80,7 @@ class PasteController extends AbstractController
     public function view(Request $request): Response
     {
         // get paste file from query string
-        $pasteFile = (string) $request->request->get('f');
+        $pasteFile = (string) $request->query->get('f');
 
         // get paste content
         $paste = $this->pasteManager->getPaste($pasteFile);
@@ -89,5 +89,28 @@ class PasteController extends AbstractController
         return $this->render('view.twig', [
             'paste' => $paste,
         ]);
+    }
+
+    /**
+     * View raw paste content by token
+     *
+     * @param Request $request The request object
+     *
+     * @return Response The raw paste content response
+     */
+    #[Route('/raw', name: 'app_raw_paste')]
+    public function raw(Request $request): Response
+    {
+        // get paste file from query string
+        $pasteFile = (string) $request->query->get('f');
+
+        // get paste content
+        $paste = $this->pasteManager->getPaste($pasteFile);
+
+        // return raw content
+        $response = new Response($paste);
+        $response->headers->set('Content-Type', 'text/plain; charset=UTF-8');
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+        return $response;
     }
 }
