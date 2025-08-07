@@ -16,10 +16,10 @@ Self-hosted solution for sharing text and code snippets.
 2. Run with docker compose (scripts/docker-start-dev.sh)
 3. Load testing database fixtures (scripts/load-fixtures.sh)
 
-## Installation - Production
-### Docker
+## Docker image
 You can build a docker image using the production docker file or use the image available here in github packages.
-### Classic PHP app
+
+## Installation - Production
 1. Clone this repository
 2. Install dependencies ``npm install && composer install``
 3. Build assets ``npm run build``
