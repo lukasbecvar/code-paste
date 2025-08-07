@@ -17,6 +17,9 @@ Self-hosted solution for sharing text and code snippets.
 3. Load testing database fixtures (scripts/load-fixtures.sh)
 
 ## Installation - Production
+### Docker
+You can build a docker image using the production docker file or use the image available here in github packages.
+### Classic PHP app
 1. Clone this repository
 2. Install dependencies ``npm install && composer install``
 3. Build assets ``npm run build``
