@@ -16,9 +16,6 @@ Self-hosted solution for sharing text and code snippets.
 2. Run with docker compose (scripts/docker-start-dev.sh)
 3. Load testing database fixtures (scripts/load-fixtures.sh)
 
-## Docker image
-You can build a docker image using the production docker file or use the image available here in github packages.
-
 ## Installation - Production
 1. Clone this repository
 2. Install dependencies ``npm install && composer install``
@@ -26,6 +23,31 @@ You can build a docker image using the production docker file or use the image a
 4. Create database ``php bin/console doctrine:database:create --if-not-exists``
 5. Migrate database ``php bin/console doctrine:migrations:migrate --no-interaction``
 6. Configure website host [apache-site.conf](./docker/configs/apache-site.conf)
+
+## Installation - Docker
+You can build a docker image using the production docker file or use the image available here in github packages.
+```yaml
+php:
+    image: ghcr.io/lukasbecvar/code-paste:latest
+    container_name: code_paste_webserver
+    restart: always
+    depends_on:
+        - mysql
+    environment:
+        - DATABASE_HOST=127.0.0.1
+        - DATABASE_PORT=3306
+        - DATABASE_NAME=code_paste
+        - DATABASE_USERNAME=root
+        - DATABASE_PASSWORD=root
+        ...
+    volumes:
+        - ./.docker/services/log:/var/log
+    mem_limit: 1g
+    ports:
+        - "80:80"
+    networks:
+        - main
+```
 
 ## Configuration
 1. Create your own .env file with name .env.prod and change app env in main .env
