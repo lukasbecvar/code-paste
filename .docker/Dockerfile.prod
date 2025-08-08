@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     git \
     npm
 
-# install Composer manually
+# install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # install PHP extensions
