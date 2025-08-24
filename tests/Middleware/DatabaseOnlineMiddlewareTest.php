@@ -30,10 +30,7 @@ class DatabaseOnlineMiddlewareTest extends TestCase
         $this->doctrineConnectionMock = $this->createMock(Connection::class);
 
         // create database online middleware instance
-        $this->middleware = new DatabaseOnlineMiddleware(
-            $this->errorManagerMock,
-            $this->doctrineConnectionMock
-        );
+        $this->middleware = new DatabaseOnlineMiddleware($this->errorManagerMock, $this->doctrineConnectionMock);
     }
 
     /**
@@ -62,8 +59,9 @@ class DatabaseOnlineMiddlewareTest extends TestCase
     {
         // mock database connection failure
         $exceptionMessage = 'Connection refused';
-        $this->doctrineConnectionMock->expects($this->once())
-            ->method('executeQuery')->with('SELECT 1')->willThrowException(new Exception($exceptionMessage));
+        $this->doctrineConnectionMock->expects($this->once())->method('executeQuery')->with('SELECT 1')->willThrowException(
+            new Exception($exceptionMessage)
+        );
 
         // expect error manager to be called
         $this->errorManagerMock->expects($this->once())->method('handleError')->with(

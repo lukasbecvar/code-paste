@@ -33,10 +33,7 @@ class PasteRepository extends ServiceEntityRepository
      */
     public function getPasteByToken(string $token): ?Paste
     {
-        $query = $this->createQueryBuilder('u')
-            ->where('u.token = :token')
-            ->setParameter('token', $token)
-            ->getQuery();
+        $query = $this->createQueryBuilder('u')->where('u.token = :token')->setParameter('token', $token)->getQuery();
 
         /** @var Paste|null $result */
         $result = $query->getOneOrNullResult();

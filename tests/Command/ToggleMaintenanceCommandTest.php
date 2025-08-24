@@ -115,8 +115,9 @@ class ToggleMaintenanceCommandTest extends TestCase
     public function testExecuteThrowsException(): void
     {
         // mock update env value
-        $this->appUtil->method('updateEnvValue')
-            ->willThrowException(new Exception('Something went wrong'));
+        $this->appUtil->method('updateEnvValue')->willThrowException(
+            new Exception('Something went wrong')
+        );
 
         // execute command
         $exitCode = $this->commandTester->execute(['mode' => 'true']);

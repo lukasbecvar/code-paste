@@ -29,10 +29,7 @@ class SecurityCheckMiddlewareTest extends TestCase
         $this->errorManagerMock = $this->createMock(ErrorManager::class);
 
         // create security check middleware instance
-        $this->middleware = new SecurityCheckMiddleware(
-            $this->appUtilMock,
-            $this->errorManagerMock
-        );
+        $this->middleware = new SecurityCheckMiddleware($this->appUtilMock, $this->errorManagerMock);
     }
 
     /**

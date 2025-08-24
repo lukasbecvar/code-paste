@@ -71,15 +71,12 @@ class PasteManagerTest extends TestCase
         $this->appUtilMock->method('getHttpHost')->willReturn('localhost');
 
         // expect entity manager to call persist and flush
-        $this->entityManagerMock->expects($this->once())
-            ->method('persist')
+        $this->entityManagerMock->expects($this->once())->method('persist')
             ->with($this->isInstanceOf(Paste::class));
-        $this->entityManagerMock->expects($this->once())
-            ->method('flush');
+        $this->entityManagerMock->expects($this->once())->method('flush');
 
         // expect log manager to be called upon successful save
-        $this->logManagerMock->expects($this->once())
-            ->method('externalLog');
+        $this->logManagerMock->expects($this->once())->method('externalLog');
 
         // call tested method
         $this->pasteManager->savePaste('sample-token', 'This is a test paste.');
@@ -98,8 +95,7 @@ class PasteManagerTest extends TestCase
         $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
 
         // expect error manager call
-        $this->errorManagerMock->expects($this->once())
-            ->method('handleError')
+        $this->errorManagerMock->expects($this->once())->method('handleError')
             ->with('paste content is empty', Response::HTTP_BAD_REQUEST);
 
         // call tested method
@@ -119,8 +115,7 @@ class PasteManagerTest extends TestCase
         $this->appUtilMock->method('isEncryptionMode')->willReturn(false);
 
         // expect error manager call
-        $this->errorManagerMock->expects($this->once())
-            ->method('handleError')
+        $this->errorManagerMock->expects($this->once())->method('handleError')
             ->with('paste content is too long', Response::HTTP_BAD_REQUEST);
 
         // call tested method

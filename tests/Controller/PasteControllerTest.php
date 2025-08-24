@@ -46,7 +46,7 @@ class PasteControllerTest extends WebTestCase
     {
         $this->client->request('POST', '/save', [
             'paste-content' => '',
-            'token' => ByteString::fromRandom(16),
+            'token' => ByteString::fromRandom(16)
         ]);
 
         // assert response
@@ -62,7 +62,7 @@ class PasteControllerTest extends WebTestCase
     {
         $this->client->request('POST', '/save', [
             'paste-content' => 'test content',
-            'token' => ByteString::fromRandom(16),
+            'token' => ByteString::fromRandom(16)
         ]);
 
         // assert response

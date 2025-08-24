@@ -62,8 +62,7 @@ class AppUtil
     public function isSsl(): bool
     {
         // check if HTTPS header is set and its value is either 1 or 'on'
-        return isset($_SERVER['HTTPS']) &&
-            ($_SERVER['HTTPS'] == 1 || strtolower($_SERVER['HTTPS']) === 'on');
+        return isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 1 || strtolower($_SERVER['HTTPS']) === 'on');
     }
 
     /**

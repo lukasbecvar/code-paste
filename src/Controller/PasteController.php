@@ -61,13 +61,13 @@ class PasteController extends AbstractController
             return $this->json([
                 'code' => Response::HTTP_OK,
                 'status' => 'success',
-                'message' => 'Paste saved successfully',
+                'message' => 'Paste saved successfully'
             ], Response::HTTP_OK);
         } catch (Exception $e) {
             return $this->json([
                 'code' => Response::HTTP_BAD_REQUEST,
                 'status' => 'error',
-                'message' => 'Error to save paste: ' . $e->getMessage(),
+                'message' => 'Error to save paste: ' . $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -90,7 +90,7 @@ class PasteController extends AbstractController
 
         // return paste view
         return $this->render('view.twig', [
-            'paste' => $paste,
+            'paste' => $paste
         ]);
     }
 
