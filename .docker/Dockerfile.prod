@@ -9,9 +9,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     unzip \
     curl \
-    rpm \
-    git \
-    npm
+    rpm
 
 # install PHP extensions
 RUN docker-php-ext-install pdo_mysql pdo intl
