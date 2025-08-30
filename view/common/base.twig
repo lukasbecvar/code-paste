@@ -36,7 +36,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    service_name: 'paste.becvar.xyz',
+                    service_name: '{{ getEnvValue("VISITOR_TRACKING_SERVICE_NAME") }}',
                     referer: visitorReferer
                 })
             })
