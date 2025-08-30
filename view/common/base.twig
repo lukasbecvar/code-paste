@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Code paste</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Text and code sharing tool" name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href={{ asset('assets/images/save.svg') }} type="image/x-icon"/>
     
     {# REDIRECT TO ERROR PAGE IF JAVASCRIPT IS DISABLED #}
@@ -25,5 +25,22 @@
         {% block body %}{% endblock %}
     </main>
     {{ encore_entry_script_tags('loading-js') }}
+
+    {# VISITOR TRACKING SYSTEM #}
+    {% if getEnvValue('VISITOR_TRACKING_ENABLED') == 'true' %}
+        <script>
+            const visitorReferer = document.referrer || 'Unknown'
+            fetch('{{ getEnvValue("VISITOR_TRACKING_URL") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    service_name: 'paste.becvar.xyz',
+                    referer: visitorReferer
+                })
+            })
+        </script>
+    {% endif %}
 </body>
 </html>
