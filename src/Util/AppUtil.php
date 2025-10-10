@@ -3,6 +3,7 @@
 namespace App\Util;
 
 use Exception;
+use InvalidArgumentException;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -20,6 +21,23 @@ class AppUtil
     public function __construct(KernelInterface $kernelInterface)
     {
         $this->kernelInterface = $kernelInterface;
+    }
+
+    /**
+     * Generate random key
+     *
+     * @param int $length The key length
+     *
+     * @return string The generated key
+     */
+    public function generateKey(int $length = 16): string
+    {
+        // check if length is valid
+        if ($length < 1) {
+            throw new InvalidArgumentException('Length must be greater than 0.');
+        }
+
+        return bin2hex(random_bytes($length));
     }
 
     /**

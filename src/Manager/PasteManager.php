@@ -232,4 +232,50 @@ class PasteManager
     {
         return $this->pasteRepository->getTotalViews();
     }
+
+    /**
+     * Re-encrypt all pastes
+     *
+     * @param string $oldKey The old encryption key
+     * @param string $newKey The new encryption key
+     *
+     * @return void
+     */
+    public function reEncryptPastes(string $oldKey, string $newKey): void
+    {
+        // check if encryption mode is disabled
+        if (!$this->appUtil->isEncryptionMode()) {
+            return;
+        }
+
+        // get all pastes
+        $pastes = $this->pasteRepository->findAll();
+
+        // re-encrypt pastes
+        foreach ($pastes as $paste) {
+            // get old encrypted content
+            $content = $paste->getContent();
+            if ($content == null) {
+                continue;
+            }
+
+            // decrypt paste content to get original content
+            $content = $this->securityUtil->decryptAes(encryptedData: $content, key: $oldKey);
+            if ($content == null) {
+                $this->errorManager->handleError(
+                    msg: 'error decrypting paste content',
+                    code: Response::HTTP_INTERNAL_SERVER_ERROR
+                );
+            }
+
+            // re-encrypt paste content
+            $paste->setContent($this->securityUtil->encryptAes(plainText: $content, key: $newKey));
+
+            // persist paste to database
+            $this->entityManager->persist($paste);
+        }
+
+        // flush changes to database
+        $this->entityManager->flush();
+    }
 }

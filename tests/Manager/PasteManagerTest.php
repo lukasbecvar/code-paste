@@ -152,4 +152,34 @@ class PasteManagerTest extends TestCase
         // assert result
         $this->assertSame(10, $result);
     }
+
+    /**
+     * Test re-encrypt pastes
+     *
+     * @return void
+     */
+    public function testReEncryptPastes(): void
+    {
+        $oldKey = 'old-key';
+        $newKey = 'new-key';
+
+        // simulate encryption mode
+        $this->appUtilMock->method('isEncryptionMode')->willReturn(true);
+
+        // mock paste repository
+        $pasteMock = $this->createMock(Paste::class);
+        $pasteMock->method('getContent')->willReturn('encrypted-content');
+        $this->pasteRepositoryMock->method('findAll')->willReturn([$pasteMock]);
+
+        // mock encryption methods to return expected values
+        $this->securityUtilMock->method('decryptAes')->willReturn('decrypted-content');
+        $this->securityUtilMock->method('encryptAes')->willReturn('re-encrypted-content');
+
+        // expect entity manager to call persist and flush
+        $this->entityManagerMock->expects($this->once())->method('persist')->with($pasteMock);
+        $this->entityManagerMock->expects($this->once())->method('flush');
+
+        // call tested method
+        $this->pasteManager->reEncryptPastes($oldKey, $newKey);
+    }
 }
