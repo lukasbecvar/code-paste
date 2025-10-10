@@ -50,11 +50,11 @@ class RotateAppSecretCommand extends Command
             // generate new APP_SECRET key
             $newSecret = $this->appUtil->generateKey(16);
 
-            // re-encrypt all pastes
-            $this->pasteManager->reEncryptPastes($oldSecret, $newSecret);
-
             // update value in environment configuration
             $this->appUtil->updateEnvValue('APP_SECRET', $newSecret);
+
+            // re-encrypt all pastes
+            $this->pasteManager->reEncryptPastes($oldSecret, $newSecret);
 
             // success output
             $io->success('APP_SECRET has been rotated successfully!');
