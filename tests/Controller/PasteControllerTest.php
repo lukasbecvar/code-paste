@@ -38,6 +38,24 @@ class PasteControllerTest extends WebTestCase
     }
 
     /**
+     * Test save paste when origin is invalid
+     *
+     * @return void
+     */
+    public function testSavePasteWhenOriginIsInvalid(): void
+    {
+        $_ENV['ALLOWED_ORIGIN'] = 'http://localhost';
+
+        $this->client->request('POST', '/save', [
+            'paste-content' => 'test content',
+            'token' => ByteString::fromRandom(16)
+        ], server: ['HTTP_Origin' => 'http://invalid.origin']);
+
+        // assert response
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    /**
      * Test save empty paste
      *
      * @return void
@@ -47,7 +65,7 @@ class PasteControllerTest extends WebTestCase
         $this->client->request('POST', '/save', [
             'paste-content' => '',
             'token' => ByteString::fromRandom(16)
-        ]);
+        ], server: ['HTTP_Origin' => 'http://localhost']);
 
         // assert response
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
@@ -63,7 +81,7 @@ class PasteControllerTest extends WebTestCase
         $this->client->request('POST', '/save', [
             'paste-content' => 'test content',
             'token' => ByteString::fromRandom(16)
-        ]);
+        ], server: ['HTTP_Origin' => 'http://localhost']);
 
         // assert response
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

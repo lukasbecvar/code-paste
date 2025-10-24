@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Exception;
+use App\Util\AppUtil;
 use App\Util\SecurityUtil;
 use App\Manager\PasteManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +20,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PasteController extends AbstractController
 {
+    private AppUtil $appUtil;
     private SecurityUtil $securityUtil;
     private PasteManager $pasteManager;
 
-    public function __construct(SecurityUtil $securityUtil, PasteManager $pasteManager)
+    public function __construct(AppUtil $appUtil, SecurityUtil $securityUtil, PasteManager $pasteManager)
     {
+        $this->appUtil = $appUtil;
         $this->securityUtil = $securityUtil;
         $this->pasteManager = $pasteManager;
     }
@@ -52,6 +55,16 @@ class PasteController extends AbstractController
         // get paste data
         $content = (string) $request->request->get('paste-content');
         $token = (string) $request->request->get('token');
+
+        // check if origin is allowed
+        $origin = $request->headers->get('Origin');
+        if ($origin == null || !str_contains($origin, $this->appUtil->getEnvValue('ALLOWED_ORIGIN'))) {
+            return $this->json([
+                'code' => Response::HTTP_FORBIDDEN,
+                'status' => 'error',
+                'message' => 'Invalid origin'
+            ], Response::HTTP_FORBIDDEN);
+        }
 
         try {
             // save paste
