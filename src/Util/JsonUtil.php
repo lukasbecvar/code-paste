@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Class JsonUtil
  *
- * JsonUtil provides functions for get JSON data from a file or URL
+ * JsonUtil provides functions for retrieving JSON data from a file or URL
  *
  * @package App\Util
  */
@@ -24,19 +24,21 @@ class JsonUtil
     /**
      * Get JSON data from a file or URL
      *
-     * @param string $target The json target path or URL
+     * @param string $target The file path or URL
      * @param string $method The HTTP method to use
+     * @param string|null $apiKey The API key to use
      *
      * @return array<mixed>|null The decoded JSON data as an associative array or null on failure
      */
-    public function getJson(string $target, string $method = 'GET'): ?array
+    public function getJson(string $target, string $method = 'GET', ?string $apiKey = null): ?array
     {
         // request context
         $context = stream_context_create([
             'http' => [
                 'method' => $method,
                 'header' => [
-                    'User-Agent: code-paste'
+                    'User-Agent: code-paste',
+                    'API-KEY: ' . $apiKey
                 ],
                 'timeout' => 5
             ]
@@ -46,18 +48,18 @@ class JsonUtil
             // get data
             $data = file_get_contents($target, false, $context);
 
-            // return null if data not retrieved
+            // return null if data retrieval fails
             if ($data == null) {
                 return null;
             }
 
-            // decode & return array
-            return (array) json_decode($data, true);
+            // decode & return json
+            return json_decode($data, true);
         } catch (Exception $e) {
             $errorMsg = 'Error retrieving JSON data: ' . $e->getMessage();
 
-            // secure api token in error message
-            $errorMsg = str_replace($_ENV['EXTERNAL_LOG_TOKEN'], '********', $errorMsg);
+            // secure api token
+            $errorMsg = str_replace($_ENV['EXTERNAL_LOG_API_TOKEN'], '********', $errorMsg);
 
             // log error
             $this->logger->error($errorMsg);

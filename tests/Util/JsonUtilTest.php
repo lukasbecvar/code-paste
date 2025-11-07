@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Class JsonUtilTest
  *
- * Test cases for json util
+ * Test cases for json util class
  *
  * @package Tests\Unit\Util
  */
@@ -24,12 +24,12 @@ class JsonUtilTest extends TestCase
         // mock dependencies
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        // create json util instance
+        // create instance of JsonUtil
         $this->jsonUtil = new JsonUtil($this->logger);
     }
 
     /**
-     * Test get json data form file
+     * Test get json with different targets
      *
      * @return void
      */
@@ -51,11 +51,11 @@ class JsonUtilTest extends TestCase
     }
 
     /**
-     * Test get json with invalid data returned from the target
+     * Test get json with invalid data
      *
      * @return void
      */
-    public function testGetJsonWithInvalidDataReturned(): void
+    public function testGetJsonWithInvalidData(): void
     {
         // test with invalid JSON data
         $invalidJson = '{"key": "value"';

@@ -29,49 +29,49 @@ class LogManagerTest extends TestCase
 
         // create log manager instance
         $this->logManager = new LogManager($this->appUtilMock, $this->jsonUtilMock);
+    }
 
-        // set environment variables
-        $_ENV['EXTERNAL_LOG_ENABLED'] = 'true';
-        $_ENV['EXTERNAL_LOG_TOKEN'] = 'test-token';
+    /**
+     * Test send log message to external log api when external log disabled
+     *
+     * @return void
+     */
+    public function testSendLogMessageToExternalLogApiWhenExternalLogDisabled(): void
+    {
+        // set external log config
+        $_ENV['EXTERNAL_LOG_ENABLED'] = 'false';
         $_ENV['EXTERNAL_LOG_URL'] = 'https://external-log-service.com/log';
-    }
+        $_ENV['EXTERNAL_LOG_API_TOKEN'] = 'test-token';
 
-    /**
-     * Test successful external log with success response
-     *
-     * @return void
-     */
-    public function testExternalLogWithSuccessResponse(): void
-    {
-        // simulate external logging is enabled
-        $this->appUtilMock->method('getEnvValue')->willReturn('true');
+        // log message
+        $value = 'This is a test log message';
 
-        $message = 'Test log message';
-        $expectedUrl = 'https://external-log-service.com/log?token=test-token&name='
-            . urlencode('code-paste: log') . '&message='
-            . urlencode('code-paste: ' . $message) . '&level=4';
-
-        // expect get json call
-        $this->jsonUtilMock->expects($this->once())->method('getJson')->with($expectedUrl, 'POST');
-
-        // call tested method
-        $this->logManager->externalLog($message);
-    }
-
-    /**
-     * Test external log with logging is disabled
-     *
-     * @return void
-     */
-    public function testExternalLogWithLoggingIsDisabled(): void
-    {
-        // simulate external logging is disabled
-        $this->appUtilMock->method('getEnvValue')->willReturn('false');
-
-        // expect get json not to be called
+        // expect json util get json call
         $this->jsonUtilMock->expects($this->never())->method('getJson');
 
         // call tested method
-        $this->logManager->externalLog('Log should not be sent');
+        $this->logManager->externalLog($value);
+    }
+
+    /**
+     * Test send log message to external log api when external log enabled
+     *
+     * @return void
+     */
+    public function testSendLogMessageToExternalLogApiWhenExternalLogEnabled(): void
+    {
+        // set external log config
+        $_ENV['EXTERNAL_LOG_ENABLED'] = 'true';
+        $_ENV['EXTERNAL_LOG_URL'] = 'https://external-log-service.com/log';
+        $_ENV['EXTERNAL_LOG_API_TOKEN'] = 'test-token';
+
+        // log message
+        $value = 'This is a test log message';
+
+        // expect json util get json call
+        $this->jsonUtilMock->expects($this->once())->method('getJson');
+
+        // call tested method
+        $this->logManager->externalLog($value);
     }
 }

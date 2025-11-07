@@ -24,26 +24,26 @@ class LogManager
     }
 
     /**
-     * Send log to external log API
+     * Send log to external monitoring system (admin-suite)
      *
-     * @param string $message The message of the log
+     * @param string $value The value (message) of the log
      *
      * @return void
      */
-    public function externalLog(string $message): void
+    public function externalLog(string $value): void
     {
-        // check if external log is enabled
-        if ($this->appUtil->getEnvValue('EXTERNAL_LOG_ENABLED') != 'true') {
+        if (!($_ENV['EXTERNAL_LOG_ENABLED'] == 'true')) {
             return;
         }
 
         // get external log config
-        $externalLogUrl = $_ENV['EXTERNAL_LOG_URL'];
-        $externalLogToken = $_ENV['EXTERNAL_LOG_TOKEN'];
+        $externalLogUrl = $this->appUtil->getEnvValue('EXTERNAL_LOG_URL');
+        $externalLogToken = $this->appUtil->getEnvValue('EXTERNAL_LOG_API_TOKEN');
 
-        // request to external log API
+        // make request to admin-suite log api
         $this->jsonUtil->getJson(
-            target: $externalLogUrl . '?token=' . $externalLogToken . '&name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $message) . '&level=4',
+            target: $externalLogUrl . '?name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $value) . '&level=4',
+            apiKey: $externalLogToken,
             method: 'POST'
         );
     }
