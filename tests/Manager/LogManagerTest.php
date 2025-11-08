@@ -68,8 +68,18 @@ class LogManagerTest extends TestCase
         // log message
         $value = 'This is a test log message';
 
+        // expect env values to be fetched for url and api key
+        $this->appUtilMock->expects($this->exactly(2))->method('getEnvValue')->willReturnMap([
+            ['EXTERNAL_LOG_URL', 'https://external-log-service.com/log'],
+            ['EXTERNAL_LOG_API_TOKEN', 'test-token']
+        ]);
+
         // expect json util get json call
-        $this->jsonUtilMock->expects($this->once())->method('getJson');
+        $this->jsonUtilMock->expects($this->once())->method('getJson')->with(
+            $this->equalTo('https://external-log-service.com/log?name=code-paste%3A%20log&message=code-paste%3A%20This%20is%20a%20test%20log%20message&level=4'),
+            $this->equalTo('POST'),
+            $this->equalTo('test-token')
+        );
 
         // call tested method
         $this->logManager->externalLog($value);

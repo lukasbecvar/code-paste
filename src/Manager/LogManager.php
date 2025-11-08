@@ -42,7 +42,7 @@ class LogManager
 
         // make request to admin-suite log api
         $this->jsonUtil->getJson(
-            target: $externalLogUrl . '?name=' . urlencode('code-paste: log') . '&message=' . urlencode('code-paste: ' . $value) . '&level=4',
+            target: $externalLogUrl . '?name=' . rawurlencode('code-paste: log') . '&message=' . rawurlencode('code-paste: ' . $value) . '&level=4',
             apiKey: $externalLogToken,
             method: 'POST'
         );
