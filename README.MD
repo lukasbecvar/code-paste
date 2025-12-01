@@ -84,7 +84,7 @@ The environment variables are loaded from .env file. You can create .env file in
 - Apache or Nginx web server with PHP support
 - NodeJS with npm
 - Composer
-- PHP 8.4
+- PHP 8.5
 - MySQL
 
 ## License
